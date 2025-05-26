@@ -1,0 +1,18 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:themes="clr-namespace:Material.Styles.Themes;assembly=Material.Styles"
+			 xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             x:Class="AiyoDesk.App"
+             RequestedThemeVariant="Default">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.Styles>
+		<themes:MaterialTheme PrimaryColor="Brown" SecondaryColor="Lime" />
+		<materialIcons:MaterialIconStyles />
+    </Application.Styles>
+
+	<Application.Resources>
+		<FontFamily x:Key="NotoSansTC">avares://AiyoDesk/Assets/Fonts/notosans.ttf</FontFamily>
+	</Application.Resources>
+	
+</Application>
