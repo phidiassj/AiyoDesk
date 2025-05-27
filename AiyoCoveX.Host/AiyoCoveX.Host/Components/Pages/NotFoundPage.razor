@@ -1,0 +1,22 @@
+﻿@page "/pagenotfound"
+@page "/pagenotfound/{httpcode}"
+@inject IJSRuntime jsRuntime
+@rendermode InteractiveServer
+
+<h5 style="text-align:center;">這個網址不存在...自動重新導向中...</h5>
+
+@code {
+    [Parameter]
+    public string? httpcode { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var uri = navManager.ToAbsoluteUri("/");
+            int redirectAfterMs = 1000;
+
+            await jsRuntime.InvokeVoidAsync("redirectToLocalUri", uri, redirectAfterMs);
+        }
+    }
+}

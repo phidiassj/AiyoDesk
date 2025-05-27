@@ -1,0 +1,27 @@
+﻿@using AiyoCoveX.Host.Components.Control
+@using AiyoCoveX.Host.Models
+
+<link href="/css/conversaction_input.css" rel="stylesheet" />
+
+<div class="ConversactionInputContainer">
+    <div class="ConversactionInputArea">
+        <textarea rows="5" style="width:100%;">@UserInputText</textarea>
+    </div>
+    <div class="ConversactionInputFunctions">
+        <div>
+            <FluentButton Appearance="Appearance.Accent" Style="width:120px;margin:5px;">Send</FluentButton>
+        </div>
+        <div>
+            <FileUploadView @bind-UploadedFileList="UploadFiles" />
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string UserInputText { get; set; } = string.Empty;
+    [Parameter]
+    public List<UploadedTempFile> UploadFiles { get; set; } = new();
+
+
+}

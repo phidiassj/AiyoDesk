@@ -1,12 +1,14 @@
+using AiyoDesk.LocalHost;
 using Avalonia.Controls;
 
-namespace AiyoDesk
+namespace AiyoDesk;
+
+public partial class MainWindow : Window
 {
-    public partial class MainWindow : Window
+    private ServiceCenter serviceCenter = new();
+    public MainWindow()
     {
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }
+

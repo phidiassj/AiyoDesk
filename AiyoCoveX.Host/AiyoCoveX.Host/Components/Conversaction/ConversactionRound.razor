@@ -1,0 +1,18 @@
+﻿
+<link href="/css/conversaction_round.css" rel="stylesheet" />
+
+<div class="RoundContainer" style="background-color:darkslategray;color:whitesmoke;">
+    <div class="RoundForUser">
+        @UserContext
+    </div>
+    <div class="RoundForAssistant">
+        @AssistantContext
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string UserContext { get; set; } = string.Empty;
+    [Parameter]
+    public string AssistantContext { get; set; } = string.Empty;
+}

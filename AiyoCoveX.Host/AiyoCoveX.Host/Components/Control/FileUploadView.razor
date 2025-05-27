@@ -1,0 +1,106 @@
+﻿@using AiyoCoveX.Host.Models
+@rendermode InteractiveServer
+@implements IDisposable
+
+<FluentInputFile @ref="@myFileUploader"
+                 DragDropZoneVisible="false"
+                 Mode="InputFileMode.SaveToTemporaryFolder"
+                 Multiple="true"
+                 AnchorId="MyUploadButton"
+                 MaximumFileSize="@(100 * 1024 * 1024)"
+                 Accept=".jpg, .jpeg, .png, .webp, .pdf"
+                 OnProgressChange="@(e =>
+                     {
+                         progressPercent = e.ProgressPercent;
+                         progressTitle = e.ProgressTitle;
+                     })"
+                 OnCompleted="@OnCompleted" />
+
+<div style="display:flex;flex-wrap:wrap;overflow-wrap:break-word;">
+    <div style="margin:0;padding:0;">
+        <FluentButton Id="MyUploadButton" Appearance="Appearance.Accent" Disabled="@Disabled" Style="width:120px;;margin:5px;">
+            上傳圖檔
+        </FluentButton>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;overflow-wrap:break-word;margin:0;padding:0;">
+        @if (Files.Any())
+        {
+            @foreach (var file in UploadedFileList)
+            {
+                <div style="margin:5px;font-size:12px;font-weight:300;letter-spacing:1px;margin:5px;">
+                    <FluentBadge Appearance="Appearance.Neutral" OnDismissClick="(e) => onFileRemoveClick(file, e)">
+                        <span style="word-break:break-all;line-break:anywhere;word-wrap:anywhere;">@file.FileName</span>
+                    </FluentBadge>
+                </div>
+            }
+        }
+    </div>
+    <div style="margin:0;padding:0;">
+        <FluentProgressRing Visible="@(progressPercent > 0 && progressPercent < 100)" />
+        @* <FluentProgress Min="0" Max="100" Visible="@(progressPercent > 0)" Value="@progressPercent" /> *@
+    </div>
+</div>
+
+@code
+{
+    [Parameter]
+    public List<UploadedTempFile> UploadedFileList { get; set; } = new();
+    [Parameter]
+    public bool Disabled { get; set; }
+    [Parameter]
+    public EventCallback<bool> DisabledChanged { get; set; }
+    [Parameter]
+    public EventCallback<List<UploadedTempFile>> UploadedFileListChanged { get; set; }
+
+    FluentInputFileEventArgs[] Files = Array.Empty<FluentInputFileEventArgs>();
+    FluentInputFile? myFileUploader = default!;
+    int? progressPercent;
+    string? progressTitle;
+
+    async Task onFileRemoveClick(UploadedTempFile file, MouseEventArgs e)
+    {
+        try
+        {
+            UploadedFileList.Remove(file);
+            await UploadedFileListChanged.InvokeAsync(UploadedFileList);
+        } catch {}
+    }
+
+    void OnCompleted(IEnumerable<FluentInputFileEventArgs> files)
+    {
+        Files = files.ToArray();
+        progressPercent = myFileUploader!.ProgressPercent;
+        progressTitle = myFileUploader!.ProgressTitle;
+
+        // For the demo, delete these files.
+        foreach (var file in Files)
+        {
+            if (file.LocalFile != null)
+            {
+                UploadedFileList.Add(new UploadedTempFile
+                {
+                    FileName = file.Name,
+                    FullName = file.LocalFile.FullName,
+                    MediaType = file.ContentType,
+                    FileSize = file.LocalFile.Length,
+                    BinaryContent = File.ReadAllBytes(file.LocalFile.FullName)
+                });
+            }
+        }
+    }
+
+    void IDisposable.Dispose()
+    {
+        if (UploadedFileList.Count > 0)
+        {
+            foreach (var file in UploadedFileList)
+            {
+                try
+                {
+                    File.Delete(file.FullName);
+                } catch {}
+            }
+        }
+    }
+
+}

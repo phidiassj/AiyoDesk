@@ -1,0 +1,137 @@
+﻿@page "/chat2"
+@using AiyoCoveX.Host.Components.Control
+@using AiyoCoveX.Host.Models
+@using AiyoCoveX.Host.Services
+@using OpenAI.Chat
+@using OpenAI.Models
+@using Newtonsoft.Json
+@rendermode InteractiveServer
+@inject IMessageService MessageService
+@inject ILocalAIService localAIService
+
+<PageTitle>多功能交談測試</PageTitle>
+<HeadContent>
+    <meta name="description" content="內部測試專用">
+</HeadContent>
+
+<h3 class="pageHeader">多功能交談測試</h3>
+
+<FluentGrid Style="width:100%;min-width:350px;" Spacing="2" Justify="JustifyContent.Center">
+    <FluentGridItem xs="12">
+        <FluentCard Style="width:100%;border:1px solid lightgray;border-radius:5px;">
+            <FluentStack Orientation="Orientation.Vertical" Width="100%">
+                <FluentTextArea Id="txtChatArea" @bind-Value="textChat" Rows="20" Style="width:100%;"></FluentTextArea>
+                <FluentAccordion Style="width:100%;">
+                    <FluentAccordionItem Heading="對話紀錄封包" Expanded="false">
+                        <FluentCard Style="width:100%;border:1px solid lightgray;border-radius:5px;">
+                            <FluentTextArea @bind-value="textPack" Rows="20" Style="width:100%;"></FluentTextArea>
+                        </FluentCard>
+                    </FluentAccordionItem>
+                </FluentAccordion>
+            </FluentStack>
+        </FluentCard>
+    </FluentGridItem>
+    <FluentGridItem xs="12">
+        <FluentCard AreaRestricted="false" Style="width:100%;border:1px solid lightgray;border-radius:5px;">
+            <FluentStack Orientation="Orientation.Vertical" VerticalGap="1" VerticalAlignment="VerticalAlignment.Top">
+                <FluentSelect Items="@models" @bind-SelectedOption="selectedModel" TOption="OpenAIModel"
+                OptionText="@(o => o.Id)"
+                OptionValue="@(o => o.Id)" Width="100%" />
+                <FluentTextArea @bind-Value="textSend" Rows="3" Style="width:100%;"></FluentTextArea>
+                <FluentStack Orientation="Orientation.Horizontal" HorizontalGap="10" VerticalAlignment="VerticalAlignment.Center">
+                    <FluentButton Appearance="Appearance.Accent" OnClick="@(() => onSendClient())" Style="margin-top:15px;">傳送</FluentButton>
+                    <FileUploadView @bind-UploadedFileList="@UploadFiles" />
+                </FluentStack>
+            </FluentStack>
+        </FluentCard>
+    </FluentGridItem>
+</FluentGrid>
+
+@code {
+    string textSend { get; set; } = string.Empty;
+    string textChat { get; set; } = string.Empty;
+    string textPack { get; set; } = string.Empty;
+
+    List<UploadedTempFile> UploadFiles { get; set; } = new();
+    OpenAIModelCollection? models { get; set; }
+    OpenAIModel? selectedModel { get; set; }
+    List<ChatMessage> messages = new();
+
+    private async Task onSendClient()
+    {
+        if (string.IsNullOrWhiteSpace(textSend) && UploadFiles.Count <= 0) return;
+        if (selectedModel == null) return;
+
+        textChat += $"User:\r\n{textSend}\r\n";
+        StateHasChanged();
+
+        UserChatMessage userChat = new();
+        if (UploadFiles.Count > 0)
+        {
+            foreach(UploadedTempFile imgFile in UploadFiles)
+            {
+                if (imgFile.BinaryContent == null || imgFile.BinaryContent.Length <= 0) continue;
+                BinaryData imgBinary = BinaryData.FromBytes(imgFile.BinaryContent);
+                ChatMessageContentPart imgPart = ChatMessageContentPart.CreateImagePart(imgBinary, imgFile.MediaType, ChatImageDetailLevel.Auto);
+                // File.WriteAllBytes(Path.Combine(localAIService.ContentLocalPath, imgFile.FileName), imgFile.BinaryContent);
+                // ChatMessageContentPart imgPart = ChatMessageContentPart.CreateImagePart(new Uri($"file://{localAIService.ContentLocalPath}\\{imgFile.FileName}"), null);
+                // ChatMessageContentPart imgPart = ChatMessageContentPart.CreateImagePart(new Uri($"file://{localAIService.ContentLocalPath}\\{imgFile.FileName}"), null);
+
+                userChat.Content.Add(imgPart);
+            }
+        }
+        userChat.Content.Add(ChatMessageContentPart.CreateTextPart(textSend));
+        messages.Add(userChat);
+
+        ChatCompletion result = await localAIService.ChatAsync(selectedModel.Id, messages);
+        textChat += $"{result.Role.ToString()}:\r\n{chatContentToString(result.Content)}\r\nFinishReason:{result.FinishReason.ToString()}\r\nRefusal:{result.Refusal}\r\nUsage:{result.Usage.InputTokenCount}/{result.Usage.OutputTokenCount}\r\n\r\n";
+        AssistantChatMessage assistantChat = new(result);
+        messages.Add(assistantChat);
+        textPack = JsonConvert.SerializeObject(messages);
+        textSend = string.Empty;
+
+        if (UploadFiles.Count > 0)
+        {
+            UploadFiles.Clear();
+        }
+
+        StateHasChanged();
+    }
+
+    private string chatContentToString(ChatMessageContent content)
+    {
+        string retContent = string.Empty;
+        foreach(ChatMessageContentPart part in content)
+        {
+            if (part.Kind == ChatMessageContentPartKind.Text)
+            {
+                retContent += part.Text + "\r\n";
+            }
+            else if (part.Kind == ChatMessageContentPartKind.Image)
+            {
+                retContent += $"Image message, Url={part.ImageUri.ToString()}, Size:{part.ImageBytes.ToArray().Length}\r\n";
+            }
+        }
+        return retContent;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                models = await localAIService.GetModels();
+            }
+            catch {}
+            if (models != null && models.Count > 0)
+            {
+                selectedModel = models.First();
+            }
+            messages.Add(new SystemChatMessage("你是一個很棒的AI助理，繁體中文是你的主要語言。"));
+            
+            StateHasChanged();
+        }
+    }
+
+}

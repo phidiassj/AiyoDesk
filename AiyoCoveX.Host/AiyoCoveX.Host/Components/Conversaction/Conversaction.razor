@@ -1,0 +1,32 @@
+﻿@page "/chat"
+@using AiyoCoveX.Host.Components.Control
+@using AiyoCoveX.Host.Models
+@using AiyoCoveX.Host.Services
+@using OpenAI.Chat
+@using OpenAI.Models
+@using Newtonsoft.Json
+@rendermode InteractiveServer
+@inject IMessageService MessageService
+@inject ILocalAIService localAIService
+
+<PageTitle>多功能交談測試</PageTitle>
+<HeadContent>
+    <meta name="description" content="內部測試專用">
+</HeadContent>
+
+<link href="\css\conversaction.css" rel="stylesheet" />
+
+<h3 class="pageHeader">多功能交談測試</h3>
+
+<div class="ConversactionContainer" style="background-color:aquamarine;">
+    <div class="ConversactionRounds">
+        <ConversactionRound />
+    </div>
+    <div class="ConversactionInputBlock">
+        <ConversactionInput />
+    </div>
+</div>
+
+@code {
+
+}

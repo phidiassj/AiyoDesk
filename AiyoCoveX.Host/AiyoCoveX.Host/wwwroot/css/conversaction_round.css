@@ -1,0 +1,25 @@
+﻿.RoundContainer {
+    display: flex;
+    flex: 1 1 100%;
+    flex-direction: column;
+    padding: 5px;
+    margin: 0;
+}
+
+.RoundForUser {
+    display: flex;
+    flex: 1 1 100%;
+    padding: 5px;
+    margin: 0;
+    white-space: pre-wrap;
+    line-break: auto;
+}
+
+.RoundForAssistant {
+    display: flex;
+    flex: 1 1 100%;
+    padding: 5px;
+    margin: 0;
+    white-space: pre-wrap;
+    line-break: auto;
+}

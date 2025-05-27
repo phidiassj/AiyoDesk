@@ -27,6 +27,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AiyoCoveX.Host\AiyoCoveX.Host\AiyoCoveX.Host.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Assets\favicon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

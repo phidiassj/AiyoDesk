@@ -1,0 +1,26 @@
+﻿.ConversactionContainer {
+    display: flex;
+    flex: 1 1 100%;
+    flex-direction: column;
+    width: 100%;
+    height: calc(100dvh - 164px);
+    min-height: calc(100dvh - 164px);
+    max-height: calc(100dvh - 164px);
+    overflow: hidden;
+}
+
+.ConversactionRounds {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.ConversactionInputBlock {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 120px;
+    min-height: 120px;
+    max-height: 120px;
+}

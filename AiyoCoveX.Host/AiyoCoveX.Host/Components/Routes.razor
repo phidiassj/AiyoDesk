@@ -1,0 +1,30 @@
+﻿@using AiyoCoveX.Host.Components.Layout
+<FluentDesignSystemProvider TypeRampBaseFontSize="16px" TypeRampBaseLineHeight="150%"
+                            TypeRampMinus1FontSize="14px" TypeRampMinus1LineHeight="100%"
+                            TypeRampMinus2FontSize="12px" TypeRampMinus2LineHeight="80%"
+                            TypeRampPlus6FontSize="18px" TypeRampPlus6LineHeight="200%"
+                            TypeRampPlus5FontSize="20px" TypeRampPlus5LineHeight="200%"
+                            TypeRampPlus4FontSize="22px" TypeRampPlus4LineHeight="200%"
+                            TypeRampPlus3FontSize="24px" TypeRampPlus3LineHeight="200%"
+                            TypeRampPlus2FontSize="26px" TypeRampPlus2LineHeight="250%"
+                            TypeRampPlus1FontSize="28px" TypeRampPlus1LineHeight="250%">
+    @* <Router AppAssembly="typeof(Program).Assembly" AdditionalAssemblies="new[] { typeof(Client._Imports).Assembly }">
+        <Found Context="routeData">
+            <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)" />
+            <FocusOnNavigate RouteData="routeData" Selector="h1" />
+        </Found>
+    </Router> *@
+        <Router AppAssembly="@typeof(App).Assembly" AdditionalAssemblies="new[] { typeof(Client._Imports).Assembly }">
+        <Found Context="routeData">
+            <RouteView RouteData="@routeData" DefaultLayout="@typeof(Layout.MainLayout)" />
+            <FocusOnNavigate RouteData="@routeData" Selector="h3" />
+        </Found>
+        <NotFound>
+            <PageTitle>網址不存在</PageTitle>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <AiyoCoveX.Host.Components.Pages.NotFoundPage />
+            </LayoutView>
+        </NotFound>
+    </Router>
+
+</FluentDesignSystemProvider>
