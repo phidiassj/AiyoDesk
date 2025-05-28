@@ -9,6 +9,13 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+
+        contentContrainer.Content = new Pages.PageSettings();
+    }
+
+    private void NavDrawerSwitch_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        LeftDrawer.LeftDrawerOpened = !(LeftDrawer.LeftDrawerOpened);
     }
 }
 

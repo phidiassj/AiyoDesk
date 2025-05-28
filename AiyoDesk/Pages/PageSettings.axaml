@@ -1,0 +1,21 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1030" d:DesignHeight="780"
+		     MinWidth="600" MinHeight="400" MaxWidth="1030" Width="1030" Height="780"
+			 HorizontalAlignment="Center" VerticalAlignment="Top"
+             x:Class="AiyoDesk.Pages.PageSettings">
+	<Border Padding="10" HorizontalAlignment="Stretch">
+		<ScrollViewer>
+			<StackPanel>
+				<Grid RowDefinitions="*,*" ColumnDefinitions="150,200,*">
+					<TextBlock Grid.Row="0" Grid.Column="0" Classes="ColHeader"
+								VerticalAlignment="Center">狀態管理</TextBlock>
+					<TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left"
+								Width="200" />
+				</Grid>
+			</StackPanel>
+		</ScrollViewer>
+	</Border>
+</UserControl>
