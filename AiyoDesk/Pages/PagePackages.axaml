@@ -1,16 +1,16 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
 			 xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
 			 xmlns:styles="clr-namespace:Material.Styles;assembly=Material.Styles"
 			 xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="1030" d:DesignHeight="780"
 		     MinWidth="600" MinHeight="400" MaxWidth="1030" Width="1030" Height="780"
 			 HorizontalAlignment="Center" VerticalAlignment="Top"
-             x:Class="AiyoDesk.Pages.PageSettings">
-	
+             x:Class="AiyoDesk.Pages.PagePackages">
+
 	<Border Padding="10" HorizontalAlignment="Stretch">
 		<ScrollViewer>
 			<WrapPanel Orientation="Horizontal" ItemsAlignment="Start" ItemSpacing="20">
@@ -18,4 +18,5 @@
 			</WrapPanel>
 		</ScrollViewer>
 	</Border>
+
 </UserControl>

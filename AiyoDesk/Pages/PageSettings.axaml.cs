@@ -8,5 +8,7 @@ public partial class PageSettings : UserControl
     public PageSettings()
     {
         InitializeComponent();
+
     }
+
 }

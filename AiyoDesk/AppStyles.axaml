@@ -3,16 +3,39 @@
 	<Style Selector="Window">
 		<Setter Property="FontFamily" Value="{StaticResource NotoSansTC}"/>
 		<Setter Property="FontSize" Value="14"/>
-		<Setter Property="FontWeight" Value="300"/>
+		<Setter Property="FontWeight" Value="400"/>
 	</Style>
 	<Style Selector="Button.navButton">
 		<Setter Property="FontSize" Value="16"/>
 		<Setter Property="FontWeight" Value="500"/>
 		<Setter Property="Foreground" Value="{DynamicResource MaterialPrimaryForegroundBrush}"/>
 	</Style>
+	<Style Selector="Button.cmdButton">
+		<Setter Property="FontSize" Value="16"/>
+		<Setter Property="FontWeight" Value="500"/>
+		<Setter Property="Background" Value="{DynamicResource MaterialSecondaryDarkBrush}"/>
+		<Setter Property="Foreground" Value="{DynamicResource MaterialSecondaryDarkForegroundBrush}"/>
+	</Style>
+	<Style Selector="Button.cmdCancelButton">
+		<Setter Property="FontSize" Value="16"/>
+		<Setter Property="FontWeight" Value="500"/>
+		<Setter Property="Background" Value="{DynamicResource MaterialSecondaryDarkBrush}"/>
+		<Setter Property="Foreground" Value="{DynamicResource MaterialSecondaryLightForegroundBrush}"/>
+	</Style>
+	<Style Selector="Button.linkButton">
+		<Setter Property="FontSize" Value="14"/>
+		<Setter Property="FontWeight" Value="400"/>
+		<Setter Property="Background" Value="{DynamicResource MaterialSecondaryMidBrush}"/>
+		<Setter Property="Foreground" Value="{DynamicResource MaterialSecondaryMidForegroundBrush}"/>
+	</Style>
 	<Style Selector="TextBlock.h1">
 		<Setter Property="FontSize" Value="24"/>
 		<Setter Property="FontWeight" Value="Black"/>
+	</Style>
+	<Style Selector="TextBlock.h3">
+		<Setter Property="FontSize" Value="20"/>
+		<Setter Property="FontWeight" Value="600"/>
+		<Setter Property="LetterSpacing" Value="2"/>
 	</Style>
 	<Style Selector="TextBlock.Title">
 		<Setter Property="FontSize" Value="18"/>
@@ -21,6 +44,11 @@
 	</Style>
 	<Style Selector="TextBlock.ColHeader">
 		<Setter Property="FontWeight" Value="500"/>
+		<Setter Property="LetterSpacing" Value="2"/>
+	</Style>
+	<Style Selector="TextBlock.Description">
+		<Setter Property="FontSize" Value="14"/>
+		<Setter Property="FontWeight" Value="400"/>
 		<Setter Property="LetterSpacing" Value="2"/>
 	</Style>
 </Styles>

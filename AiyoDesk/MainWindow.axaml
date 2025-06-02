@@ -9,7 +9,7 @@
 		xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
         mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="780"
 		MinWidth="600" MinHeight="400" Width="1200" Height="780"
-		FontFamily="{StaticResource NotoSansTC}" FontSize="16" FontWeight="Bold"
+		FontFamily="{StaticResource NotoSansTC}" FontSize="16" FontWeight="500"
         x:Class="AiyoDesk.MainWindow"
         Title="AiyoDesk">
 
@@ -17,6 +17,7 @@
 		<controls:SnackbarHost HostName="Root">
 			<controls:NavigationDrawer Name="LeftDrawer" Classes="permanent" LeftDrawerWidth="160">
 				<controls:NavigationDrawer.LeftDrawerContent>
+					
 					<controls:ColorZone Name="LeftDrawerContainer" Mode="Standard">
 						<ScrollViewer>
 							<Grid ColumnDefinitions="*" Name="MainSplitPaneGrid" Margin="10"
@@ -49,9 +50,11 @@
 						</Grid>
 						</ScrollViewer>
 					</controls:ColorZone>
+				
 				</controls:NavigationDrawer.LeftDrawerContent>
 
 				<DockPanel LastChildFill="true">
+					
 					<controls:ColorZone Name="AppBarContainer" VerticalAlignment="Top" HorizontalAlignment="Stretch"
 										DockPanel.Dock="Top"
 										Height="56" Mode="Accent" ZIndex="1">
@@ -68,7 +71,7 @@
 										  Width="32" Height="32" Padding="4">
 								<avalonia:MaterialIcon Kind="Menu" Width="24" Height="24" />
 							</ToggleButton>
-							<TextBlock Grid.Column="2" Classes="Headline6" Text="Material.Avalonia Demo"
+							<TextBlock Name="AppBarTitle" Grid.Column="2" Classes="h3" Text="系統設定"
 									   VerticalAlignment="Center" />
 							<Menu Grid.Column="4" Height="32" Padding="0" Margin="0">
 								<MenuItem Height="32" Width="32" Header="{materialIcons:MaterialIconExt Kind=DotsVertical, Size=24}">
@@ -103,15 +106,13 @@
 							HorizontalContentAlignment="Stretch"
 							HorizontalAlignment="Stretch"
 							HorizontalScrollBarVisibility="Disabled">
-							<Border HorizontalAlignment="Stretch"
-									VerticalAlignment="Stretch">
-								<TransitioningContentControl x:Name="contentContrainer"
+							<Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+								<TransitioningContentControl x:Name="contentContrainer" Margin="0 20 0 0"
 									HorizontalAlignment="Stretch" VerticalAlignment="Top"
 											/>
 							</Border>
 						</ScrollViewer>
 					</controls:ColorZone>
-
 
 				</DockPanel>
 

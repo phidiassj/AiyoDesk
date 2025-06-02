@@ -1,0 +1,70 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+			 xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
+			 xmlns:styles="clr-namespace:Material.Styles;assembly=Material.Styles"
+			 xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1030" d:DesignHeight="780"
+		     MinWidth="600" MinHeight="400" MaxWidth="1030" Width="1030" Height="780"
+			 HorizontalAlignment="Center" VerticalAlignment="Top"
+             x:Class="AiyoDesk.Pages.PageMustInstall">
+
+	<Border Padding="10" HorizontalAlignment="Stretch">
+		<StackPanel Orientation="Vertical" MaxWidth="600" 
+					HorizontalAlignment="Center" VerticalAlignment="Top">
+			<TextBlock TextWrapping="Wrap" Classes="h3" TextAlignment="Center">
+				歡迎使用 AiyoDesk
+			</TextBlock>
+			<TextBlock Margin="20 30 20 20" TextWrapping="Wrap">
+				AiyoDesk 是一個整合系統，所有功能模組都依賴社群開源的 llama.cpp 及 Conda Miniforge 提供 AI 服務，您必須先安裝這兩個軟體套件，才能正常使用本系統所有功能。
+			</TextBlock>
+			<WrapPanel Orientation="Horizontal" ItemsAlignment="Center" ItemSpacing="20" Margin="10" HorizontalAlignment="Center">
+				<Button x:Name="btnLlamaCpp" Click="OfficialLink_Click" Classes="linkButton">llama.cpp 官方網站</Button>
+				<Button x:Name="btnConda" Click="OfficialLink_Click" Classes="linkButton">Conda Miniforge 官方網站</Button>
+			</WrapPanel>
+			<TextBlock Margin="20 30 20 10" TextWrapping="Wrap">
+				請設定您的硬體類型以開始安裝這兩個軟體套件，如果您有符合要求的顯示卡，建議使用 GPU 運行。
+			</TextBlock>
+			<RadioButton x:Name="rdoHardwareCPU" IsChecked="true" Checked="rdoHardware_Checked" Margin="30 0 0 0">
+				使用純 CPU 運行 AI 功能。
+			</RadioButton>
+			<RadioButton x:Name="rdoHardwareCuda" Checked="rdoHardware_Checked" Margin="30 0 0 0">
+				使用 CPU 及 NVidia GPU 運行 AI 功能。
+			</RadioButton>
+			<RadioButton x:Name="rdoHardwareHip" Checked="rdoHardware_Checked" Margin="30 0 0 0">
+				使用 CPU 及 AMD GPU 運行 AI 功能。
+			</RadioButton>
+			<RadioButton x:Name="rdoHardwareIntel" Checked="rdoHardware_Checked" Margin="30 0 0 0">
+				使用 CPU 及 Intel GPU 運行 AI 功能。
+			</RadioButton>
+			<RadioButton x:Name="rdoHardwarePass" Checked="rdoHardware_Checked" Margin="30 0 0 0">
+				略過這個步驟。
+			</RadioButton>
+			<StackPanel Orientation="Horizontal" Margin="20 25 0 0">
+				<CheckBox x:Name="chkInstallGemma" IsCheckedChanged="chkInstallGemma_Checked" IsThreeState="False" IsChecked="true">
+					同時幫我安裝 Google Gemma-3 模型
+				</CheckBox>
+				<HyperlinkButton x:Name="btnGemma" Click="OfficialLink_Click" Margin="5 0 0 0">官方網站</HyperlinkButton>
+			</StackPanel>
+			<TextBlock Margin="48 2 20 10" TextWrapping="Wrap">
+				您可以使用任何 llama.cpp 支援的本地 AI 模型，並且在多個模型間自由切換，勾選本項會同時為您下載本系統推薦的 Google Gemma-3-4b 模型，支援影像辨識且可以在大多數的電腦流暢運行。您也可以稍候到「模型管理」功能頁自行安裝其他模型。
+			</TextBlock>
+			<StackPanel Orientation="Horizontal" Margin="20 20 0 0">
+				<CheckBox x:Name="chkInstallOpenWebUI" IsCheckedChanged="chkInstallOpenWebUI_Checked" IsThreeState="False" IsChecked="true">
+					同時幫我安裝 Open WebUI 交談介面
+				</CheckBox>
+				<HyperlinkButton x:Name="btnOpenWebUI" Click="OfficialLink_Click" Margin="5 0 0 0">官方網站</HyperlinkButton>
+			</StackPanel>
+			<TextBlock Margin="48 2 20 10" TextWrapping="Wrap">
+				Open WebUI 是開源的 AI 交談介面，支援文字、圖像、語音交談。安裝之後，您可以在本系統客戶端直接啟動，直接與您安裝的 AI 交談。
+			</TextBlock>
+			<WrapPanel Orientation="Horizontal" ItemsAlignment="Center" ItemSpacing="20" Margin="40" HorizontalAlignment="Center">
+				<Button x:Name="btnStart" Click="btnStart_Click" Classes="cmdButton">開始安裝</Button>
+				<Button x:Name="btnCancel" Click="btnCancel_Click" Classes="cmdCancelButton">略過</Button>
+			</WrapPanel>
+		</StackPanel>
+	</Border>
+
+</UserControl>
