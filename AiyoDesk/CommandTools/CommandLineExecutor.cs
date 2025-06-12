@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Runtime.InteropServices;
+using System.IO;
 
 namespace AiyoDesk.CommanandTools;
 
@@ -28,6 +29,30 @@ public class CommandLineExecutor : IDisposable
 
     [DllImport("kernel32.dll", SetLastError = true)]
     private static extern bool GenerateConsoleCtrlEvent(uint dwCtrlEvent, uint dwProcessGroupId);
+
+    public static string GetAppRootPath()
+    {
+        return AppDomain.CurrentDomain.BaseDirectory;
+    }
+
+    public static string GetPackageRootPath()
+    {
+        return Path.Combine(GetAppRootPath(), "AppPackages");
+    }
+
+    public static string GetScriptRootPath()
+    {
+        return Path.Combine(GetAppRootPath(), "CommandTools");
+    }
+
+    public static void StartProcess(string commandString)
+    {
+        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+        {
+            FileName = commandString,
+            UseShellExecute = true
+        });
+    }
 
     // 控制台控制處理器委託
     private delegate bool ConsoleCtrlDelegate(uint CtrlType);
@@ -56,7 +81,7 @@ public class CommandLineExecutor : IDisposable
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
-                CreateNoWindow = false,
+                CreateNoWindow = true,
                 ErrorDialog = false, 
                 WindowStyle = ProcessWindowStyle.Minimized, 
                 Arguments = "/K",
@@ -120,26 +145,31 @@ public class CommandLineExecutor : IDisposable
 
         var tcs = new TaskCompletionSource<bool>();
         var commandDone = false;
-        string promptPattern = $"__CMD_DONE__{Guid.NewGuid()}"; // 您可能需要更精確的提示符檢測
+        string promptPattern = $"__CMD_DONE__{Guid.NewGuid()}";
 
         EventHandler<string>? handler = null;
+        string lastLine = string.Empty;
         handler = (sender, output) =>
         {
-            // 呼叫回調來即時處理輸出
-            outputHandler?.Invoke(output);
-
             // 檢測命令是否完成(基於命令提示符的出現)
             if (!commandDone && output.TrimEnd().EndsWith(promptPattern))
             {
                 commandDone = true;
                 tcs.TrySetResult(true);
+                ExecuteCommand("cls");
+            }
+
+            // 呼叫回調來即時處理輸出
+            if (output != lastLine && !commandDone)
+            {
+                outputHandler?.Invoke(output);
+                lastLine = output;
             }
         };
 
         try
         {
             OutputReceived += handler;
-
             // 註冊取消處理
             using (cancellationToken.Register(() =>
             {
@@ -183,7 +213,7 @@ public class CommandLineExecutor : IDisposable
         var outputQueue = new System.Collections.Concurrent.ConcurrentQueue<string>();
         var outputAvailable = new SemaphoreSlim(0);
         var commandCompleted = new TaskCompletionSource<bool>();
-        string promptPattern = $"__CMD_DONE__{Guid.NewGuid()}"; // 您可能需要更精確的提示符檢測
+        string promptPattern = $"__CMD_DONE__{Guid.NewGuid()}";
 
         EventHandler<string>? handler = null;
         handler = (sender, output) =>
@@ -390,13 +420,9 @@ public class CommandLineExecutor : IDisposable
     }
 }
 
-/// <summary>
-/// 支援的控制鍵組合
-/// </summary>
 public enum ControlKeys
 {
     CtrlC,
     CtrlD,
     CtrlZ
-    // 您可以根據需要添加更多
 }

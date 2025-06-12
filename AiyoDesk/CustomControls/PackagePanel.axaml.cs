@@ -1,7 +1,7 @@
 using AiyoDesk.AppPackages;
-using Avalonia;
+using AiyoDesk.CommanandTools;
+using AiyoDesk.Models;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 
 namespace AiyoDesk.CustomControls;
@@ -23,6 +23,10 @@ public partial class PackagePanel : UserControl
         manageButtonState();
         package.RunningStateChanged += packageStateChanged;
         package.InstalledStateChanged += packageStateChanged;
+        PackageRun.IsEnabled = CurrentPackage.PackageCanActivateAndStop;
+        PackageStop.IsEnabled = CurrentPackage.PackageCanActivateAndStop;
+        PackageUninstall.IsEnabled = CurrentPackage.PackageCanUninstall;
+        PackageSource.IsEnabled = !(string.IsNullOrWhiteSpace(CurrentPackage.PackageOfficialUrl));
     }
 
     private void packageStateChanged(object? s, bool state)
@@ -52,15 +56,32 @@ public partial class PackagePanel : UserControl
     {
     }
 
-    private void PackageInstall_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private async void PackageInstall_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
+        if (CurrentPackage.PackageIsMustInstall)
+        {
+            MainWindow.mainWindow.SwitchPage(MainWindow.mainWindow.pageMustInstall);
+        }
+        else
+        {
+            var confirm = await MessageDialogHandler.ShowConfirmAsync($"即將開始安裝 {CurrentPackage.PackageName}，確定執行嗎?", "安裝確認");
+            if (confirm == null || !confirm.Equals(true)) return;
+            var result = await MessageDialogHandler.ShowLicenseAsync(CurrentPackage);
+            if (result == null || !result.Equals(true)) return;
+            await CurrentPackage.PackageInstall();
+        }
     }
 
-    private void PackageUninstall_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private async void PackageUninstall_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
+        var confirm = await MessageDialogHandler.ShowConfirmAsync($"即將開始移除 {CurrentPackage.PackageName}，確定執行嗎?", "移除確認");
+        if (confirm == null || !confirm.Equals(true)) return;
+        await CurrentPackage.PackageUninstall();
     }
 
     private void PackageSource_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
+        if (string.IsNullOrWhiteSpace(CurrentPackage.PackageOfficialUrl)) return;
+        CommandLineExecutor.StartProcess(CurrentPackage.PackageOfficialUrl);
     }
 }

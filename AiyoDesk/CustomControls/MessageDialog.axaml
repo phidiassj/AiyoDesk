@@ -1,0 +1,35 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+			 xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
+			 xmlns:styles="clr-namespace:Material.Styles;assembly=Material.Styles"
+			 xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+			 xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="320" d:DesignHeight="300"
+			 MinWidth="320" MinHeight="300" Margin="0" Padding="0"
+			 FontFamily="{StaticResource NotoSansTC}" FontSize="16" FontWeight="400"
+             x:Class="AiyoDesk.CustomControls.MessageDialog">
+
+	<Border Padding="5" BorderThickness="0" CornerRadius="8" BorderBrush="{DynamicResource MaterialDividerBrush}">
+		<StackPanel Orientation="Vertical">
+			<TextBlock Name="txtMessageTitle" Classes="ColHeader" Padding="10"
+					   Background="{DynamicResource MaterialSecondaryDarkBrush}"
+					   Foreground="{DynamicResource MaterialSecondaryDarkForegroundBrush}" />
+			<ScrollViewer Height="190">
+				<TextBlock Name="txtMessageContent" Padding="10" TextWrapping="Wrap"
+						   Background="{DynamicResource MaterialSecondaryLightBrush}"
+						   Foreground="{DynamicResource MaterialSecondaryLightForegroundBrush}" />
+			</ScrollViewer>
+			<Panel Background="{DynamicResource MaterialSecondaryMidBrush}">
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
+							Background="{DynamicResource MaterialSecondaryMidBrush}">
+					<Button Name="btnConfirm" Click="btnConfirm_Click" Content="確定" Margin="10,10,0,10" Classes="cmdButton" HorizontalContentAlignment="Center" />
+					<Button Name="btnCancel" Click="btnCancel_Click" Content="確定" Margin="10,10,10,10" Classes="cmdButton" HorizontalAlignment="Center" />
+				</StackPanel>
+			</Panel>
+		</StackPanel>
+	</Border>
+
+</UserControl>

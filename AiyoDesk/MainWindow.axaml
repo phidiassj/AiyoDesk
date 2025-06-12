@@ -7,13 +7,15 @@
 		xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
 		xmlns:styles="clr-namespace:Material.Styles;assembly=Material.Styles"
 		xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+		xmlns:models="clr-namespace:AiyoDesk.Models"
         mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="780"
-		MinWidth="600" MinHeight="400" Width="1200" Height="780"
+		MinWidth="350" MinHeight="400" Width="1200" Height="780"
 		FontFamily="{StaticResource NotoSansTC}" FontSize="16" FontWeight="500"
         x:Class="AiyoDesk.MainWindow"
         Title="AiyoDesk">
 
-	<dialogHostAvalonia:DialogHost Identifier="MainDialogHost">
+	<dialogHostAvalonia:DialogHost Identifier="MainDialogHost" DialogMargin="0"  BorderThickness="1"
+								   dialogHostAvalonia:DialogHostStyle.CornerRadius="8" BorderBrush="{DynamicResource MaterialDividerBrush}">
 		<controls:SnackbarHost HostName="Root">
 			<controls:NavigationDrawer Name="LeftDrawer" Classes="permanent" LeftDrawerWidth="160">
 				<controls:NavigationDrawer.LeftDrawerContent>
@@ -27,8 +29,8 @@
 										Padding="0,10,0,0" HorizontalAlignment="Center"
 										Classes="h1" Foreground="{DynamicResource MaterialColumnHeaderBrush }"
 									/>
-							<Button Content="{materialIcons:MaterialIconTextExt Kind=PackageVariantAdd, Text=套件安裝}"
-									Classes="navButton" Margin="5"
+							<Button Name="btnPackages" Content="{materialIcons:MaterialIconTextExt Kind=PackageVariantAdd, Text=套件安裝}"
+									Classes="navButton" Margin="5" Click="btnPackages_Click"
 									Grid.Column="0" Grid.Row="2"
 								/>
 							<Button Content="{materialIcons:MaterialIconTextExt Kind=Molecule, Text=模型管理}"
@@ -121,49 +123,4 @@
 		</controls:SnackbarHost>
 	</dialogHostAvalonia:DialogHost>
 	
-	<!--
-	<SplitView IsPaneOpen="True" Name="MainSplitPane"
-            DisplayMode="CompactInline"
-            OpenPaneLength="170">
-		<SplitView.Pane>
-			<Border BorderThickness="1" BorderBrush="Black"
-					Margin="0" Padding="5"
-					>
-				<Grid ColumnDefinitions="*" Name="MainSplitPaneGrid" Margin="10"
-						RowDefinitions="50,10,50,50,50,50,50,50,50,*,50"
-						HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-					<TextBlock Text="AiyoDesk" Grid.Column="0" Grid.Row="0"
-							   Padding="0,10,0,0" HorizontalAlignment="Center"
-							   Classes="h1" Foreground="LimeGreen"
-							   />
-					<Button Content="{materialIcons:MaterialIconTextExt Kind=PackageVariantAdd, Text=套件安裝}"
-							Classes="navButton" Margin="5"
-							Grid.Column="0" Grid.Row="2"
-							/>
-					<Button Content="{materialIcons:MaterialIconTextExt Kind=Molecule, Text=模型管理}"
-							Classes="navButton" Margin="5"
-							Grid.Column="0" Grid.Row="3"
-							/>
-					<Button Content="{materialIcons:MaterialIconTextExt Kind=ViewModule, Text=模組管理}"
-							Classes="navButton" Margin="5"
-							Grid.Column="0" Grid.Row="4"
-							/>
-					<Button Content="{materialIcons:MaterialIconTextExt Kind=ShieldLock, Text=安全中心}"
-							Classes="navButton" Margin="5"
-							Grid.Column="0" Grid.Row="5"
-							/>
-					<Button Content="{materialIcons:MaterialIconTextExt Kind=ShieldLock, Text=系統設定}"
-							Classes="navButton" Margin="5"
-							Grid.Column="0" Grid.Row="6"
-							/>
-				</Grid>
-			</Border>
-		</SplitView.Pane>
-		
-		<TransitioningContentControl x:Name="contentContrainer" 
-									 HorizontalAlignment="Stretch" VerticalAlignment="Top"
-									 />
-
-	</SplitView>
-	-->
 </Window>

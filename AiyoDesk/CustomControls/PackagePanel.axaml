@@ -12,14 +12,14 @@
              x:Class="AiyoDesk.CustomControls.PackagePanel">
 
 	<Border Padding="5" BorderThickness="1" CornerRadius="5" BorderBrush="{DynamicResource MaterialDividerBrush}">
-		<StackPanel Orientation="Vertical">
+		<StackPanel Orientation="Vertical" Height="290" Width="310">
 			<TextBlock Name="PackageName" Classes="ColHeader" Padding="10"
 					   Background="{DynamicResource MaterialSecondaryDarkBrush}" 
 					   Foreground="{DynamicResource MaterialSecondaryDarkForegroundBrush}" />
-			<ScrollViewer>
-				<TextBlock Name="PackageDescription" Padding="10" TextWrapping="WrapWithOverflow"
-						   Background="{DynamicResource MaterialSecondaryLightBrush}"
-						   Foreground="{DynamicResource MaterialSecondaryLightForegroundBrush}" Height="190" />
+			<ScrollViewer Height="190">
+				<TextBlock Name="PackageDescription" Padding="10" TextWrapping="WrapWithOverflow" FontSize="14"
+							Background="{DynamicResource MaterialSecondaryLightBrush}"
+							Foreground="{DynamicResource MaterialSecondaryLightForegroundBrush}" />
 			</ScrollViewer>
 			<StackPanel Orientation="Horizontal" Background="{DynamicResource MaterialSecondaryMidBrush}">
 				<Button Name="PackageRun" Content="執行" Click="PackageRun_Click" Margin="10,10,0,10" Classes="cmdButton" />

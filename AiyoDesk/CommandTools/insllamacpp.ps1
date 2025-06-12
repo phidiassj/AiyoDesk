@@ -39,20 +39,12 @@ function Create-Conda-Env {
 
 function Download-LLAMACPP {
     $release = Invoke-RestMethod 'https://api.github.com/repos/ggml-org/llama.cpp/releases/latest'
+    $pattern = \"llama-.*-bin-$Backend-x64\\.zip\"
     $assets = $release.assets
-    switch ($Backend.ToUpper()) {
-        "CUDA" {
-            $asset = $assets | Where-Object { $_.name -match 'win-cuda.*\.zip$' } | Sort-Object name | Select-Object -Last 1
-        }
-        "BLAS" {
-            $asset = $assets | Where-Object { $_.name -match 'win-cpu-x64\.zip$' }
-        }
-        Default {
-            throw "目前不支援的後端: $Backend。請使用 BLAS 或 CUDA"
-        }
-    }
+    $asset = $assets | Where-Object { $_.name -match $pattern } | Sort-Object name | Select-Object -Last 1
+
     if (-not $asset) {
-        throw "找不到對應 $Backend 的 llama.cpp zip 檔"
+        throw \"找不到符合後端 '$Backend' 的 llama.cpp 壓縮檔 (模式: $pattern)\"
     }
     $zipPath = "$PSScriptRoot\llama.zip"
     Download-File $asset.browser_download_url $zipPath
