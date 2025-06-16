@@ -45,6 +45,11 @@ public class CommandLineExecutor : IDisposable
         return Path.Combine(GetAppRootPath(), "CommandTools");
     }
 
+    public static string GetAIModelsPath()
+    {
+        return Path.Combine(GetAppRootPath(), "AIModels");
+    }
+
     public static void StartProcess(string commandString)
     {
         System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo

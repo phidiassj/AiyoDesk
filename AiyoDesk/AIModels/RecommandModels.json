@@ -1,0 +1,80 @@
+[
+  {
+    "ModelId": "gemma-3-4b-it-GGUF",
+    "Company": "Google",
+    "Serial": "gemma-3",
+    "Name": "gemma-3-4b-it",
+    "DownloadUrl": "https://huggingface.co/ggml-org/gemma-3-4b-it-GGUF/resolve/main/gemma-3-4b-it-Q4_K_M.gguf?download=true",
+    "LicenseUrl": "https://ai.google.dev/gemma/terms",
+    "Description": "Gemma 是 Google 推出的一系列先進輕量級開放式模型，採用與建立 Gemini 模型時相同的研究成果和技術。Gemma 3 模型屬於多模態模型，可處理文字和圖像輸入內容，並產生文字輸出內容，且預先訓練的變化版本和指令調整的變化版本都含有開放權重。Gemma 3 提供 128K 的大型脈絡窗，支援超過 140 種語言，且提供比先前版本更多尺寸。Gemma 3 模型非常適合各種文字生成和圖像理解工作，包括回答問題、摘要和推理。由於模型大小相對較小，因此可在資源有限的環境中部署，例如筆電、桌機或您自己的雲端基礎架構，讓所有人都能使用先進的 AI 模型，並協助促進創新。",
+    "ModelType": "chat",
+    "HardwareRequired": "low",
+    "FunctionCall": true,
+    "Vision": true
+  },
+  {
+    "ModelId": "twinkle-ai.Llama-3.2-3B-F1-Reasoning-Instruct-GGUF",
+    "Company": "TwinkleAI",
+    "Serial": "TwinkleAI",
+    "Name": "twinkle-ai.Llama-3.2-3B-F1-Reasoning-Instruct",
+    "DownloadUrl": "https://huggingface.co/DevQuasar/twinkle-ai.Llama-3.2-3B-F1-Reasoning-Instruct-GGUF/resolve/main/twinkle-ai.Llama-3.2-3B-F1-Reasoning-Instruct.Q4_K_M.gguf?download=true",
+    "LicenseUrl": "https://huggingface.co/meta-llama/Llama-3.2-1B/blob/main/LICENSE.txt",
+    "Description": "Llama-3.2-3B-F1-Reasoning-Instruct（a.k.a Formosa-1-Reasoning or F1-Reasoning） 是由 Twinkle AI 與 APMIC 合作開發，並在國家高速網路與計算中心技術指導之下，針對中華民國台灣語境與任務需求所微調之繁體中文語言模型，涵蓋法律、教育、生活應用等多元場景，並以高指令跟隨能力為目標進行強化。",
+    "ModelType": "chat",
+    "HardwareRequired": "low",
+    "FunctionCall": true,
+    "Vision": false
+  },
+  {
+    "ModelId": "twinkle-ai.Llama-3.2-3B-F1-Instruct-GGUF",
+    "Company": "TwinkleAI",
+    "Serial": "TwinkleAI",
+    "Name": "twinkle-ai.Llama-3.2-3B-F1-Instruct",
+    "DownloadUrl": "https://huggingface.co/DevQuasar/twinkle-ai.Llama-3.2-3B-F1-Instruct-GGUF/resolve/main/twinkle-ai.Llama-3.2-3B-F1-Instruct.Q4_K_M.gguf?download=true",
+    "LicenseUrl": "https://huggingface.co/meta-llama/Llama-3.2-1B/blob/main/LICENSE.txt",
+    "Description": "Llama-3.2-3B-F1-Reasoning-Instruct（a.k.a Formosa-1-Reasoning or F1-Reasoning） 是由 Twinkle AI 與 APMIC 合作開發，並在國家高速網路與計算中心技術指導之下，針對中華民國台灣語境與任務需求所微調之繁體中文語言模型，涵蓋法律、教育、生活應用等多元場景，並以高指令跟隨能力為目標進行強化。",
+    "ModelType": "chat",
+    "HardwareRequired": "low",
+    "FunctionCall": true,
+    "Vision": false
+  },
+  {
+    "ModelId": "gemma-3-12b-it-GGUF",
+    "Company": "Google",
+    "Serial": "gemma-3",
+    "Name": "gemma-3-12b-it",
+    "DownloadUrl": "https://huggingface.co/ggml-org/gemma-3-12b-it-GGUF/resolve/main/gemma-3-12b-it-Q4_K_M.gguf?download=true",
+    "LicenseUrl": "https://ai.google.dev/gemma/terms",
+    "Description": "Gemma 是 Google 推出的一系列先進輕量級開放式模型，採用與建立 Gemini 模型時相同的研究成果和技術。Gemma 3 模型屬於多模態模型，可處理文字和圖像輸入內容，並產生文字輸出內容，且預先訓練的變化版本和指令調整的變化版本都含有開放權重。Gemma 3 提供 128K 的大型脈絡窗，支援超過 140 種語言，且提供比先前版本更多尺寸。Gemma 3 模型非常適合各種文字生成和圖像理解工作，包括回答問題、摘要和推理。由於模型大小相對較小，因此可在資源有限的環境中部署，例如筆電、桌機或您自己的雲端基礎架構，讓所有人都能使用先進的 AI 模型，並協助促進創新。",
+    "ModelType": "chat",
+    "HardwareRequired": "medium",
+    "FunctionCall": true,
+    "Vision": true
+  },
+  {
+    "ModelId": "gemma-3-27b-it-GGUF",
+    "Company": "Google",
+    "Serial": "gemma-3",
+    "Name": "gemma-3-27b-it",
+    "DownloadUrl": "https://huggingface.co/ggml-org/gemma-3-27b-it-GGUF/resolve/main/gemma-3-27b-it-Q4_K_M.gguf?download=true",
+    "LicenseUrl": "https://ai.google.dev/gemma/terms",
+    "Description": "Gemma 是 Google 推出的一系列先進輕量級開放式模型，採用與建立 Gemini 模型時相同的研究成果和技術。Gemma 3 模型屬於多模態模型，可處理文字和圖像輸入內容，並產生文字輸出內容，且預先訓練的變化版本和指令調整的變化版本都含有開放權重。Gemma 3 提供 128K 的大型脈絡窗，支援超過 140 種語言，且提供比先前版本更多尺寸。Gemma 3 模型非常適合各種文字生成和圖像理解工作，包括回答問題、摘要和推理。由於模型大小相對較小，因此可在資源有限的環境中部署，例如筆電、桌機或您自己的雲端基礎架構，讓所有人都能使用先進的 AI 模型，並協助促進創新。",
+    "ModelType": "chat",
+    "HardwareRequired": "high",
+    "FunctionCall": true,
+    "Vision": true
+  },
+  {
+    "ModelId": "gemma-3-1b-it-GGUF",
+    "Company": "Google",
+    "Serial": "gemma-3",
+    "Name": "gemma-3-1b-it",
+    "DownloadUrl": "https://huggingface.co/ggml-org/gemma-3-1b-it-GGUF/resolve/main/gemma-3-1b-it-Q4_K_M.gguf?download=true",
+    "LicenseUrl": "https://ai.google.dev/gemma/terms",
+    "Description": "Gemma 是 Google 推出的一系列先進輕量級開放式模型，採用與建立 Gemini 模型時相同的研究成果和技術。Gemma 3 模型屬於多模態模型，可處理文字和圖像輸入內容，並產生文字輸出內容，且預先訓練的變化版本和指令調整的變化版本都含有開放權重。Gemma 3 提供 128K 的大型脈絡窗，支援超過 140 種語言，且提供比先前版本更多尺寸。Gemma 3 模型非常適合各種文字生成和圖像理解工作，包括回答問題、摘要和推理。由於模型大小相對較小，因此可在資源有限的環境中部署，例如筆電、桌機或您自己的雲端基礎架構，讓所有人都能使用先進的 AI 模型，並協助促進創新。",
+    "ModelType": "chat",
+    "HardwareRequired": "low",
+    "FunctionCall": true,
+    "Vision": false
+  }
+]

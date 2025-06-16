@@ -1,0 +1,54 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+			 xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
+			 xmlns:styles="clr-namespace:Material.Styles;assembly=Material.Styles"
+			 xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="320" d:DesignHeight="300"
+			 Width="320" Height="300"
+			 FontFamily="{StaticResource NotoSansTC}" FontSize="16" FontWeight="400"
+             x:Class="AiyoDesk.CustomControls.ModelPanel">
+
+	<Border Padding="5" BorderThickness="1" CornerRadius="5" BorderBrush="{DynamicResource MaterialDividerBrush}">
+		<StackPanel Orientation="Vertical" Height="290" Width="310">
+			<TextBlock Name="ModelName" Classes="ColHeader" Padding="10" TextWrapping="NoWrap"
+					   Background="{DynamicResource MaterialSecondaryDarkBrush}"
+					   Foreground="{DynamicResource MaterialSecondaryDarkForegroundBrush}" />
+			<ScrollViewer Height="190" Background="{DynamicResource MaterialSecondaryLightBrush}">
+				<StackPanel Orientation="Vertical">
+					<WrapPanel Orientation="Horizontal" Margin="2" ItemSpacing="2">
+						<Border BorderThickness="1" CornerRadius="10" Padding="5"
+								BorderBrush="{DynamicResource MaterialDividerBrush}" 
+								Background="{DynamicResource MaterialSecondaryMidBrush}">
+							<TextBlock x:Name="lblHardwareNeeded" Classes="ChipLabel" 
+									   VerticalAlignment="Center" HorizontalAlignment="Center" />
+						</Border>
+						<Border BorderThickness="1" CornerRadius="10" Padding="5" x:Name="bdCanVision"
+								BorderBrush="{DynamicResource MaterialDividerBrush}" 
+								Background="{DynamicResource MaterialSecondaryMidBrush}">
+							<TextBlock x:Name="lblCanVision" Classes="ChipLabel" Text="視覺"
+									   VerticalAlignment="Center" HorizontalAlignment="Center" />
+						</Border>
+						<Border BorderThickness="1" CornerRadius="10" Padding="5" x:Name="bdCanTools"
+								BorderBrush="{DynamicResource MaterialDividerBrush}" 
+								Background="{DynamicResource MaterialSecondaryMidBrush}">
+							<TextBlock x:Name="lblCanTools" Classes="ChipLabel" Text="工具呼叫"
+									   VerticalAlignment="Center" HorizontalAlignment="Center" />
+						</Border>
+					</WrapPanel>
+					<TextBlock Name="ModelDescription" Padding="10,0,10,10" TextWrapping="Wrap" FontSize="14"
+							   Foreground="{DynamicResource MaterialSecondaryLightForegroundBrush}">
+					</TextBlock>
+				</StackPanel>
+			</ScrollViewer>
+			<StackPanel Orientation="Horizontal" Background="{DynamicResource MaterialSecondaryMidBrush}">
+				<Button Name="ModelInstall" Content="安裝" Click="ModelInstall_Click" Margin="10,10,0,10" Classes="cmdButton" />
+				<Button Name="ModelUninstall" Content="卸除" Click="ModelUninstall_Click" Margin="10,10,0,10" Classes="cmdButton" />
+				<Button Name="ModelSource" Content="官網" Click="ModelSource_Click" Margin="10,10,0,10" Classes="cmdButton" />
+			</StackPanel>
+		</StackPanel>
+	</Border>
+
+</UserControl>

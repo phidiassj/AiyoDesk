@@ -8,8 +8,8 @@
 		xmlns:styles="clr-namespace:Material.Styles;assembly=Material.Styles"
 		xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
 		xmlns:models="clr-namespace:AiyoDesk.Models"
-        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="780"
-		MinWidth="350" MinHeight="400" Width="1200" Height="780"
+        mc:Ignorable="d" d:DesignWidth="1240" d:DesignHeight="780"
+		MinWidth="350" MinHeight="400" Width="1240" Height="780"
 		FontFamily="{StaticResource NotoSansTC}" FontSize="16" FontWeight="500"
         x:Class="AiyoDesk.MainWindow"
         Title="AiyoDesk">
@@ -29,12 +29,12 @@
 										Padding="0,10,0,0" HorizontalAlignment="Center"
 										Classes="h1" Foreground="{DynamicResource MaterialColumnHeaderBrush }"
 									/>
-							<Button Name="btnPackages" Content="{materialIcons:MaterialIconTextExt Kind=PackageVariantAdd, Text=套件安裝}"
+							<Button Name="btnPackages" Content="{materialIcons:MaterialIconTextExt Kind=PackageVariantAdd, Text=整合套件}"
 									Classes="navButton" Margin="5" Click="btnPackages_Click"
 									Grid.Column="0" Grid.Row="2"
 								/>
-							<Button Content="{materialIcons:MaterialIconTextExt Kind=Molecule, Text=模型管理}"
-									Classes="navButton" Margin="5"
+							<Button Name="btnModels" Content="{materialIcons:MaterialIconTextExt Kind=Molecule, Text=模型管理}"
+									Classes="navButton" Margin="5" Click="btnModels_Click"
 									Grid.Column="0" Grid.Row="3"
 								/>
 							<Button Content="{materialIcons:MaterialIconTextExt Kind=ViewModule, Text=模組管理}"

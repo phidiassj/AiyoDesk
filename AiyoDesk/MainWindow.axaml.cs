@@ -12,6 +12,7 @@ public partial class MainWindow : Window
     public static MainWindow mainWindow { get; private set; } = default!;
     public ServiceCenter serviceCenter { get; internal set; } = default!;
     public PagePackages pagePackages { get; internal set; } = new();
+    public PageModelsManage pageModels { get; internal set; } = new();
     public PageMustInstall pageMustInstall { get; internal set; } = new();
 
     public MainWindow()
@@ -25,13 +26,31 @@ public partial class MainWindow : Window
         });
         pageMustInstall.mainWindow = this;
         contentContrainer.Content = pageMustInstall;
+        showPageName(pageMustInstall);
     }
 
     public void SwitchPage(object TargetPage)
     {
         Dispatcher.UIThread.Invoke(() => { 
             contentContrainer.Content = TargetPage;
+            showPageName(TargetPage);
         });
+    }
+
+    private void showPageName(object TargetPage)
+    {
+        if (TargetPage.Equals(pagePackages))
+        {
+            AppBarTitle.Text = "整合套件";
+        }
+        else if (TargetPage.Equals(pageModels))
+        {
+            AppBarTitle.Text = "模型管理";
+        }
+        else if (TargetPage.Equals(pageMustInstall))
+        {
+            AppBarTitle.Text = "安裝必須套件";
+        }
     }
 
     private void NavDrawerSwitch_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -42,6 +61,13 @@ public partial class MainWindow : Window
     private void btnPackages_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         contentContrainer.Content = pagePackages;
+        showPageName(pagePackages);
+    }
+
+    private void btnModels_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        contentContrainer.Content = pageModels;
+        showPageName(pageModels);
     }
 }
 

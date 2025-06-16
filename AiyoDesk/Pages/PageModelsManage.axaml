@@ -1,0 +1,39 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+			 xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
+			 xmlns:styles="clr-namespace:Material.Styles;assembly=Material.Styles"
+			 xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1030" d:DesignHeight="780"
+		     MinWidth="350" MinHeight="400"
+			 HorizontalAlignment="Stretch" VerticalAlignment="Top" Padding="20"
+             x:Class="AiyoDesk.Pages.PageModelsManage">
+
+	<StackPanel Orientation="Vertical" Spacing="10">
+		<TextBlock Text="已安裝模型" Classes="h3" Grid.Row="0" />
+		<Border Padding="5" HorizontalAlignment="Stretch" Grid.Row="1"
+				BorderThickness="1" CornerRadius="5" BorderBrush="{DynamicResource MaterialDividerBrush}">
+			<TreeView x:Name="InstalledContainer" MinWidth="350" MinHeight="300" />
+		</Border>
+		<TextBlock Text="推薦模型" Classes="h3" Grid.Row="2" Margin="0,20,0,0" />
+		<Border Padding="5" HorizontalAlignment="Stretch" Grid.Row="3"
+				BorderThickness="1" CornerRadius="5" BorderBrush="{DynamicResource MaterialDividerBrush}">
+			<WrapPanel x:Name="RecommandContainer" Orientation="Horizontal" ItemsAlignment="Start" 
+						ItemSpacing="20" LineSpacing="10"
+						HorizontalAlignment="Stretch" MinWidth="350">
+			</WrapPanel>
+		</Border>
+		<TextBlock Text="自行安裝模型指南" Classes="h3" Grid.Row="4" Margin="0,20,0,0" />
+		<Border Padding="5" HorizontalAlignment="Stretch" Grid.Row="5"
+				BorderThickness="1" CornerRadius="5" BorderBrush="{DynamicResource MaterialDividerBrush}">
+			<TextBlock>
+				
+			</TextBlock>
+		</Border>
+		
+	</StackPanel>
+	
+
+</UserControl>

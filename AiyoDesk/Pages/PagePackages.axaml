@@ -11,7 +11,7 @@
 			 HorizontalAlignment="Center" VerticalAlignment="Top"
              x:Class="AiyoDesk.Pages.PagePackages">
 
-	<WrapPanel Orientation="Horizontal" ItemsAlignment="Start" ItemSpacing="20" 
+	<WrapPanel Orientation="Horizontal" ItemsAlignment="Start" ItemSpacing="20" LineSpacing="10"
 			   HorizontalAlignment="Stretch" MinWidth="350">
 		<UserControl Name="HttpServicePanel" />
 		<UserControl Name="CondaServicePanel" />

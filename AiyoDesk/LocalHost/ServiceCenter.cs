@@ -1,4 +1,5 @@
 ﻿
+using AiyoDesk.AIModels;
 using AiyoDesk.AppPackages;
 using AiyoDesk.CommanandTools;
 using System;
@@ -17,6 +18,8 @@ public class ServiceCenter
     public static CondaService condaService { get; set; } = default!;
     public static LlamaCppService llamaCppService { get; set; } = default!;
     public static OpenWebUIService openWebUIService { get; set; } = default!;
+
+    public static ModelManager modelManager { get; internal set; } = new();
 
     public static bool CondaEnvExists { get; internal set; }
 

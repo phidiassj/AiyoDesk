@@ -51,4 +51,9 @@
 		<Setter Property="FontWeight" Value="400"/>
 		<Setter Property="LetterSpacing" Value="2"/>
 	</Style>
+	<Style Selector="TextBlock.ChipLabel">
+		<Setter Property="FontSize" Value="14"/>
+		<Setter Property="FontWeight" Value="400"/>
+		<Setter Property="Foreground" Value="{DynamicResource MaterialSecondaryDarkForegroundBrush}"/>
+	</Style>
 </Styles>
