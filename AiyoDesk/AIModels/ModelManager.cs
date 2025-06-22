@@ -11,16 +11,15 @@ namespace AiyoDesk.AIModels;
 
 public class ModelManager
 {
+    public EventHandler? InstalledStateChanged { get; set; }
+
     public List<RecommandModelItem> RecommandModels = null!;
     public List<InstalledModelItem> ChatModels = null!;
-    public List<InstalledModelItem> EmbeddingModels = null!;
-    public List<InstalledModelItem> SttModels = null!;
-    public List<InstalledModelItem> TtsModels = null!;
 
     public ModelManager()
     {
         loadRecommandModels();
-        loadInstalledModels();
+        LoadInstalledModels();
     }
 
     private void loadRecommandModels()
@@ -39,19 +38,14 @@ public class ModelManager
         catch { }
     }
 
-    private void loadInstalledModels()
+    public void LoadInstalledModels()
     {
         ChatModels = new();
         loadInstalledModels("llm", ModelType.chat, false, false, ChatModels);
         loadInstalledModels("llm_tools", ModelType.chat, true, false, ChatModels);
         loadInstalledModels("llm_vision", ModelType.chat, false, true, ChatModels);
         loadInstalledModels("llm_tools_vision", ModelType.chat, true, true, ChatModels);
-        EmbeddingModels = new();
-        loadInstalledModels("embedding", ModelType.embedding, false, false, EmbeddingModels);
-        SttModels = new();
-        loadInstalledModels("stt", ModelType.speech, false, false, SttModels);
-        TtsModels = new();
-        loadInstalledModels("tts", ModelType.speech, false, false, TtsModels);
+        if (InstalledStateChanged != null) InstalledStateChanged.Invoke(this, EventArgs.Empty);
     }
 
     private void loadInstalledModels(string subPath, ModelType modelType, bool functionCall, bool vision, List<InstalledModelItem> typeGroup)
@@ -67,7 +61,7 @@ public class ModelManager
             string modelName = Path.Combine(subDir.FullName, "model.gguf");
             if (!File.Exists(modelName)) continue;
             if (vision && !File.Exists(Path.Combine(subDir.FullName, "mmproj.gguf"))) continue;
-            InstalledModelItem newItem = new() { PathName = modelName, ModelType = modelType, FunctionCall = functionCall };
+            InstalledModelItem newItem = new() { PathName = modelName, ModelName = subDir.Name, ModelType = modelType, FunctionCall = functionCall };
             if (vision)
             {
                 newItem.Vision = true;

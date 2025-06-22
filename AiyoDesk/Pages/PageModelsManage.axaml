@@ -5,21 +5,34 @@
 			 xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
 			 xmlns:styles="clr-namespace:Material.Styles;assembly=Material.Styles"
 			 xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+			 xmlns:aimodels="using:AiyoDesk.AIModels"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="1030" d:DesignHeight="780"
 		     MinWidth="350" MinHeight="400"
 			 HorizontalAlignment="Stretch" VerticalAlignment="Top" Padding="20"
              x:Class="AiyoDesk.Pages.PageModelsManage">
-
+	
 	<StackPanel Orientation="Vertical" Spacing="10">
 		<TextBlock Text="已安裝模型" Classes="h3" Grid.Row="0" />
-		<Border Padding="5" HorizontalAlignment="Stretch" Grid.Row="1"
-				BorderThickness="1" CornerRadius="5" BorderBrush="{DynamicResource MaterialDividerBrush}">
-			<TreeView x:Name="InstalledContainer" MinWidth="350" MinHeight="300" />
+		<Border Padding="0" HorizontalAlignment="Stretch" Grid.Row="1"
+				BorderThickness="0" CornerRadius="5" BorderBrush="{DynamicResource MaterialDividerBrush}">
+			<DataGrid x:Name="InstalledModelContainer" Margin="20" MinHeight="300"
+					  IsReadOnly="True" SelectionMode="Single"
+					  CanUserReorderColumns="True"
+					  CanUserResizeColumns="True"
+					  CanUserSortColumns="True"
+					  GridLinesVisibility="Horizontal"
+					  BorderThickness="1">
+				<DataGrid.Columns>
+					<DataGridTextColumn Header="模型名稱" Binding="{Binding ModelName}" x:DataType="aimodels:InstalledModelItem" />
+					<DataGridTextColumn Header="視覺辨識" Binding="{Binding VisionText}" x:DataType="aimodels:InstalledModelItem" />
+					<DataGridTextColumn Header="工具呼叫" Binding="{Binding FunctionCallText}" x:DataType="aimodels:InstalledModelItem" />
+				</DataGrid.Columns>
+			</DataGrid>
 		</Border>
 		<TextBlock Text="推薦模型" Classes="h3" Grid.Row="2" Margin="0,20,0,0" />
 		<Border Padding="5" HorizontalAlignment="Stretch" Grid.Row="3"
-				BorderThickness="1" CornerRadius="5" BorderBrush="{DynamicResource MaterialDividerBrush}">
+				BorderThickness="0" CornerRadius="5" BorderBrush="{DynamicResource MaterialDividerBrush}">
 			<WrapPanel x:Name="RecommandContainer" Orientation="Horizontal" ItemsAlignment="Start" 
 						ItemSpacing="20" LineSpacing="10"
 						HorizontalAlignment="Stretch" MinWidth="350">
@@ -28,8 +41,24 @@
 		<TextBlock Text="自行安裝模型指南" Classes="h3" Grid.Row="4" Margin="0,20,0,0" />
 		<Border Padding="5" HorizontalAlignment="Stretch" Grid.Row="5"
 				BorderThickness="1" CornerRadius="5" BorderBrush="{DynamicResource MaterialDividerBrush}">
-			<TextBlock>
-				
+			<TextBlock TextWrapping="Wrap" Padding="15">
+				本系統依賴 llama.cpp 運行 AI 模型，所以理論上可以運行所有支援 llama.cpp 的模型 ( gguf 格式)。您可以自行從 HuggingFace 或其他模型代管平台下載模型檔案，放置到本系統指定的目錄下，再重新啟動本系統即可自動偵測到。<LineBreak />
+				<LineBreak />
+				<Run FontWeight="500">AIModels\llm : </Run>純交談模型<LineBreak />
+				<Run FontWeight="500">AIModels\llm_tools : </Run>支援工具呼叫但不支援視覺辨識的模型<LineBreak />
+				<Run FontWeight="500">AIModels\llm_vision : </Run>支援視覺辨識但不支援工具呼叫的模型<LineBreak />
+				<Run FontWeight="500">AIModels\llm_tools_vision : </Run>視覺辨識及工具呼叫皆支援的模型<LineBreak />
+				<LineBreak />
+				子資料夾名稱會作為模型名稱，而模型檔案必須命名為 model.gguf 或 mmproj.gguf (影像編碼模型)<LineBreak />
+				<LineBreak />
+				<Run FontWeight="500">路徑範例:</Run><LineBreak />
+				<LineBreak />
+				%AiyoDesk%\AIModels\llm_tools_vision\gemma-3-4b-it-gguf\model.gguf<LineBreak />
+				%AiyoDesk%\AIModels\llm_tools_vision\gemma-3-4b-it-gguf\mmproj.gguf<LineBreak />
+				系統會將 gemma-3-4b-it-gguf 顯示為模型名稱，並且認定這是一個視覺辨識及工具呼叫皆支援的模型。<LineBreak />
+				<LineBreak />
+				%AiyoDesk%\AIModels\llm_tools\twinkle-ai_Llama-3.2-3B-F1\model.gguf<LineBreak />
+				系統會將 twinkle-ai_Llama-3.2-3B-F1 顯示為模型名稱，並且認定這是一個支援工具呼叫但不支援視覺辨識的模型。<LineBreak />
 			</TextBlock>
 		</Border>
 		

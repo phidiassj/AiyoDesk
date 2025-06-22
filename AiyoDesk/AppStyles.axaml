@@ -56,4 +56,8 @@
 		<Setter Property="FontWeight" Value="400"/>
 		<Setter Property="Foreground" Value="{DynamicResource MaterialSecondaryDarkForegroundBrush}"/>
 	</Style>
+	<Style Selector="DataGrid">
+		<Setter Property="Foreground" Value="{DynamicResource MaterialSecondaryDarkForegroundBrush}"/>
+		<Setter Property="Background" Value="{DynamicResource MaterialSecondaryDarkBrush}"/>
+	</Style>
 </Styles>

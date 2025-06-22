@@ -1,4 +1,5 @@
 ﻿
+using AiyoDesk.AIModels;
 using AiyoDesk.AppPackages;
 using AiyoDesk.CustomControls;
 using DialogHostAvalonia;
@@ -41,7 +42,18 @@ public class MessageDialogHandler
         dialog.LicenseUrl = appPackage.PackageLicenseUrl;
         dialog.txtMessageTitle.Text = $"{appPackage.PackageName} 的授權協議";
         dialog.btnOfficialLink.Text = appPackage.PackageLicenseUrl;
-        //dialog.btnOfficialLink.NavigateUri = new System.Uri(appPackage.PackageLicenseUrl);
+        dialog.btnConfirm.IsVisible = true;
+        var result = await DialogHost.Show(dialog, "MainDialogHost");
+        return result;
+    }
+
+    public static async Task<object?> ShowLicenseAsync(RecommandModelItem rcModel)
+    {
+        if (string.IsNullOrWhiteSpace(rcModel.LicenseUrl)) return true;
+        var dialog = new LicenseDialog();
+        dialog.LicenseUrl = rcModel.LicenseUrl;
+        dialog.txtMessageTitle.Text = $"{rcModel.Name} 的授權協議";
+        dialog.btnOfficialLink.Text = rcModel.LicenseUrl;
         dialog.btnConfirm.IsVisible = true;
         var result = await DialogHost.Show(dialog, "MainDialogHost");
         return result;
