@@ -2,6 +2,7 @@
 using AiyoDesk.AIModels;
 using AiyoDesk.AppPackages;
 using AiyoDesk.CustomControls;
+using AiyoDesk.Data;
 using DialogHostAvalonia;
 using OpenAI.Assistants;
 using System.Threading.Tasks;
@@ -55,6 +56,14 @@ public class MessageDialogHandler
         dialog.txtMessageTitle.Text = $"{rcModel.Name} 的授權協議";
         dialog.btnOfficialLink.Text = rcModel.LicenseUrl;
         dialog.btnConfirm.IsVisible = true;
+        var result = await DialogHost.Show(dialog, "MainDialogHost");
+        return result;
+    }
+
+    public static async Task<object?> ShowPackageSettingAsync(PackageSetting packageSetting, bool CanAutoActivate, bool HasServicePort, bool HasStartupParameters)
+    {
+        var dialog = new PackageSettingPanel();
+        dialog.LoadSetting(packageSetting, CanAutoActivate, HasServicePort, HasStartupParameters);
         var result = await DialogHost.Show(dialog, "MainDialogHost");
         return result;
     }

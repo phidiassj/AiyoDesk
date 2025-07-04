@@ -46,7 +46,7 @@
 									Grid.Column="0" Grid.Row="5"
 								/>
 							<Button Content="{materialIcons:MaterialIconTextExt Kind=ShieldLock, Text=系統設定}"
-									Classes="navButton" Margin="5"
+									Classes="navButton" Margin="5" Click="btnSettings_Click"
 									Grid.Column="0" Grid.Row="6"
 								/>
 						</Grid>
@@ -103,17 +103,19 @@
 					</controls:ColorZone>
 
 					<controls:ColorZone Name="ContentContainer" Mode="PrimaryDark">
-						<ScrollViewer Name="mainScroller"
-							DockPanel.Dock="Top"
-							HorizontalContentAlignment="Stretch"
-							HorizontalAlignment="Stretch"
-							HorizontalScrollBarVisibility="Disabled">
-							<Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-								<TransitioningContentControl x:Name="contentContrainer" Margin="0 20 0 0"
-									HorizontalAlignment="Stretch" VerticalAlignment="Top"
-											/>
-							</Border>
-						</ScrollViewer>
+						<controls:SnackbarHost x:Name="SnackbarHoster" HostName="MainWindow">
+							<ScrollViewer Name="mainScroller"
+								DockPanel.Dock="Top"
+								HorizontalContentAlignment="Stretch"
+								HorizontalAlignment="Stretch"
+								HorizontalScrollBarVisibility="Disabled">
+								<Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+									<TransitioningContentControl x:Name="contentContrainer" Margin="0 20 0 0"
+										HorizontalAlignment="Stretch" VerticalAlignment="Top"
+												/>
+								</Border>
+							</ScrollViewer>
+						</controls:SnackbarHost>
 					</controls:ColorZone>
 
 				</DockPanel>

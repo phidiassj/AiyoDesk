@@ -6,7 +6,7 @@ $ErrorActionPreference = "Stop"
 
 function Download-File($url, $output) {
     Write-Host "¤U¸ü: $url"
-    Invoke-WebRequest -Uri $url -OutFile $output
+    Invoke-WebRequest -Uri $url -OutFile $output -Headers @{ "User-Agent" = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36" }
 }
 
 function Install-Conda {

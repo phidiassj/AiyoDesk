@@ -1,21 +1,67 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
 			 xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
 			 xmlns:styles="clr-namespace:Material.Styles;assembly=Material.Styles"
 			 xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="1030" d:DesignHeight="780"
-		     MinWidth="600" MinHeight="400" MaxWidth="1030" Width="1030" Height="780"
-			 HorizontalAlignment="Center" VerticalAlignment="Top"
+		     MinWidth="350" MinHeight="400" MaxWidth="1030"
+			 HorizontalAlignment="Stretch" VerticalAlignment="Top"
              x:Class="AiyoDesk.Pages.PageSettings">
-	
+
 	<Border Padding="10" HorizontalAlignment="Stretch">
-		<ScrollViewer>
-			<WrapPanel Orientation="Horizontal" ItemsAlignment="Start" ItemSpacing="20">
-				<UserControl Name="HttpServicePanel" />
-			</WrapPanel>
-		</ScrollViewer>
+		<StackPanel Orientation="Vertical" Spacing="10" Margin="20" HorizontalAlignment="Stretch">
+			<TextBlock Text="系統設定" Classes="h3" />
+			<Border Padding="0" HorizontalAlignment="Stretch"
+					BorderThickness="1" CornerRadius="5" BorderBrush="{DynamicResource MaterialDividerBrush}">
+				<WrapPanel x:Name="RecommandContainer" Orientation="Horizontal" ItemsAlignment="Start"
+						   ItemSpacing="20" LineSpacing="10" Margin="20"
+						   HorizontalAlignment="Stretch" MinWidth="350">
+					<StackPanel Orientation="Vertical" MaxWidth="320">
+						<CheckBox x:Name="chkAutoRunAtStartup" IsThreeState="False" IsChecked="true">
+							開機自動執行
+						</CheckBox>
+						<TextBlock Classes="Description" TextWrapping="Wrap" Margin="28 0 0 0">
+							AiyoDesk 會在您的電腦啟動後自動執行
+						</TextBlock>
+					</StackPanel>
+					<StackPanel Orientation="Vertical" MaxWidth="320">
+						<CheckBox x:Name="chkDisplaySystemTray" IsThreeState="False" IsChecked="true">
+							最小化到系統列圖示
+						</CheckBox>
+						<TextBlock Classes="Description" TextWrapping="Wrap" Margin="28 0 0 0">
+							AiyoDesk 最小化後會隱藏視窗並顯示系統列圖示
+						</TextBlock>
+					</StackPanel>
+				</WrapPanel>
+			</Border>
+		
+			<TextBlock Text="系統訊息" Classes="h3" Margin="0,20,0,0" />
+			<Border Padding="5" HorizontalAlignment="Stretch" Margin="0,5,0,0"
+					BorderThickness="1" CornerRadius="5" BorderBrush="{DynamicResource MaterialDividerBrush}">
+				<StackPanel Orientation="Horizontal">
+					<Button Name="btnSysLogs" Content="系統紀錄" Click="LogsButton_Click" Margin="10,0,0,0" Classes="smallButton" />
+					<Button Name="btnLlamacppLogs" Content="llama.cpp" Click="LogsButton_Click" Margin="10,0,0,0" Classes="smallButton" />
+					<Button Name="btnOpenWebUILogs" Content="Open-WebUI" Click="LogsButton_Click" Margin="10,0,0,0" Classes="smallButton" />
+				</StackPanel>
+			</Border>
+			<Border Padding="5" HorizontalAlignment="Stretch"
+					BorderThickness="1" CornerRadius="5" BorderBrush="{DynamicResource MaterialDividerBrush}">
+				<ScrollViewer x:Name="scrollMessages" Height="490" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+					<SelectableTextBlock x:Name="txtMessages" Padding="10"
+										 SelectionBrush="{DynamicResource MaterialPrimaryDarkBrush}"
+										 SelectionForegroundBrush="{DynamicResource MaterialPrimaryForegroundBrush}"
+										 Foreground="{DynamicResource MaterialPrimaryMidForegroundBrush}" 
+										 Background="{DynamicResource MaterialPrimaryMidBrush}">
+						請由上方按鈕選擇紀錄分類
+					</SelectableTextBlock>
+				</ScrollViewer>
+			</Border>
+
+
+		</StackPanel>
 	</Border>
+
 </UserControl>

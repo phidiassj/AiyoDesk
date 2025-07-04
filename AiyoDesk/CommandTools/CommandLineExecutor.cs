@@ -6,11 +6,17 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Runtime.InteropServices;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using Tmds.DBus.Protocol;
 
 namespace AiyoDesk.CommanandTools;
 
 public class CommandLineExecutor : IDisposable
 {
+    public bool CondaEnvExists { get; private set; }
+    public string MessageLogs { get; private set; } = string.Empty;
+
     private Process? _cmdProcess;
     private bool _disposed = false;
 
@@ -50,6 +56,11 @@ public class CommandLineExecutor : IDisposable
         return Path.Combine(GetAppRootPath(), "AIModels");
     }
 
+    public static string GetCondaScriptPath()
+    {
+        return Path.Combine(GetPackageRootPath(), "conda", "envs", "aiyodesk", "Scripts");
+    }
+
     public static void StartProcess(string commandString)
     {
         System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
@@ -66,6 +77,13 @@ public class CommandLineExecutor : IDisposable
     /// 每當有新的輸出行時觸發的事件
     /// </summary>
     public event EventHandler<string>? OutputReceived;
+
+    private void newLog(string content)
+    {
+        if (!MessageLogs.EndsWith('\n')) MessageLogs += '\n';
+        MessageLogs += content;
+        OutputReceived?.Invoke(this, content);
+    }
 
     /// <summary>
     /// 初始化一個新的 CommandLineExecutor 實例並啟動 cmd.exe
@@ -98,7 +116,8 @@ public class CommandLineExecutor : IDisposable
         {
             if (e.Data != null)
             {
-                OutputReceived?.Invoke(this, e.Data);
+                //OutputReceived?.Invoke(this, e.Data);
+                newLog(e.Data);
             }
         };
 
@@ -106,8 +125,9 @@ public class CommandLineExecutor : IDisposable
         {
             if (e.Data != null)
             {
-                OutputReceived?.Invoke(this, e.Data);
+                //OutputReceived?.Invoke(this, e.Data);
                 //OutputReceived?.Invoke(this, $"ERROR: {e.Data}");
+                newLog(e.Data);
             }
         };
 
@@ -330,7 +350,7 @@ public class CommandLineExecutor : IDisposable
                 SetConsoleCtrlHandler(null, true);
 
                 // 發送 Ctrl+C 信號
-                GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0);
+                GenerateConsoleCtrlEvent(CTRL_C_EVENT, (uint)_cmdProcess.Id);
 
                 // 重新啟用 Ctrl+C 處理
                 SetConsoleCtrlHandler(null, false);
@@ -341,7 +361,9 @@ public class CommandLineExecutor : IDisposable
         }
         catch (Exception ex)
         {
-            OutputReceived?.Invoke(this, $"ERROR: 發送 Ctrl+C 失敗: {ex.Message}");
+            string msg = $"ERROR: 發送 Ctrl+C 失敗: {ex.Message}";
+            OutputReceived?.Invoke(this, msg);
+            newLog(msg);
         }
     }
 
@@ -371,6 +393,61 @@ public class CommandLineExecutor : IDisposable
 
         return outputBuilder.ToString();
     }
+
+    private static int condaAcivateCount = 0;
+    public async Task ActivateCondaEnv()
+    {
+        while(condaAcivateCount > 0)
+        {
+            await Task.Delay(500);
+        }
+        condaAcivateCount++;
+
+        string execCommand = string.Empty;
+        if (checkCondaInstalled())
+        {
+            string activatePath = Path.Combine(GetPackageRootPath(), "conda", "condabin", "activate.bat");
+            string envPath = Path.Combine(GetPackageRootPath(), "conda", "envs", "aiyodesk");
+            execCommand = $"{activatePath} \"{envPath}\"";
+        }
+        else
+        {
+            execCommand = "conda activate aiyodesk";
+        }
+
+        List<string> resultList = new();
+        await ExecuteCommandWithRealtimeOutputAsync(execCommand, resultLine =>
+        {
+            resultLine = resultLine.TrimEnd('\n');
+            if (!string.IsNullOrWhiteSpace(resultLine)) resultList.Add(resultLine);
+        });
+
+        condaAcivateCount--;
+        await checkCondaEnvExists();
+    }
+
+    public async Task checkCondaEnvExists()
+    {
+        string execCommand = "conda --version";
+
+        List<string> resultList = new();
+        await ExecuteCommandWithRealtimeOutputAsync(execCommand, resultLine =>
+        {
+            resultLine = resultLine.TrimEnd('\n');
+            if (!string.IsNullOrWhiteSpace(resultLine)) resultList.Add(resultLine);
+        });
+        if (resultList.Count > 0 && Regex.IsMatch(resultList.Last().ToLower(), @"^conda\s+(\d+(\.\d+)*?)$"))
+        {
+            CondaEnvExists = true;
+        }
+    }
+
+    private bool checkCondaInstalled()
+    {
+        string packagePath = Path.Combine(GetPackageRootPath(), "conda", "Scripts", "conda.exe");
+        return File.Exists(packagePath);
+    }
+
 
     /// <summary>
     /// 釋放資源
@@ -430,4 +507,10 @@ public enum ControlKeys
     CtrlC,
     CtrlD,
     CtrlZ
+}
+
+public class MessageRecord
+{
+    public DateTime time { get; set; } = DateTime.MinValue;
+    public string message { get; set; } = string.Empty;
 }

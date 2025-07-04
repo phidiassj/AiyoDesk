@@ -19,8 +19,4 @@
     <PackageReference Include="OpenAI" Version="2.1.0" />
     <PackageReference Include="System.Formats.Asn1" Version="8.0.2" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
 </Project>

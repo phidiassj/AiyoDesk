@@ -21,7 +21,10 @@ public class Startup
             .AddInteractiveWebAssemblyComponents();
         services.AddFluentUIComponents();
         services.AddServerSideBlazor();
-        services.AddControllers();
+        services.AddControllers().AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+        });
 
         services.AddScoped<ILocalAIService, LocalAIService>();
     }

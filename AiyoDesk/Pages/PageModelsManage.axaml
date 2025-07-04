@@ -13,8 +13,8 @@
              x:Class="AiyoDesk.Pages.PageModelsManage">
 	
 	<StackPanel Orientation="Vertical" Spacing="10">
-		<TextBlock Text="已安裝模型" Classes="h3" Grid.Row="0" />
-		<Border Padding="0" HorizontalAlignment="Stretch" Grid.Row="1"
+		<TextBlock Text="已安裝模型" Classes="h3" />
+		<Border Padding="0" HorizontalAlignment="Stretch"
 				BorderThickness="0" CornerRadius="5" BorderBrush="{DynamicResource MaterialDividerBrush}">
 			<DataGrid x:Name="InstalledModelContainer" Margin="20" MinHeight="300"
 					  IsReadOnly="True" SelectionMode="Single"
@@ -30,7 +30,7 @@
 				</DataGrid.Columns>
 			</DataGrid>
 		</Border>
-		<TextBlock Text="推薦模型" Classes="h3" Grid.Row="2" Margin="0,20,0,0" />
+		<TextBlock Text="推薦模型" Classes="h3" Margin="0,20,0,0" />
 		<Border Padding="5" HorizontalAlignment="Stretch" Grid.Row="3"
 				BorderThickness="0" CornerRadius="5" BorderBrush="{DynamicResource MaterialDividerBrush}">
 			<WrapPanel x:Name="RecommandContainer" Orientation="Horizontal" ItemsAlignment="Start" 
@@ -39,7 +39,7 @@
 			</WrapPanel>
 		</Border>
 		<TextBlock Text="自行安裝模型指南" Classes="h3" Grid.Row="4" Margin="0,20,0,0" />
-		<Border Padding="5" HorizontalAlignment="Stretch" Grid.Row="5"
+		<Border Padding="5" HorizontalAlignment="Stretch"
 				BorderThickness="1" CornerRadius="5" BorderBrush="{DynamicResource MaterialDividerBrush}">
 			<TextBlock TextWrapping="Wrap" Padding="15">
 				本系統依賴 llama.cpp 運行 AI 模型，所以理論上可以運行所有支援 llama.cpp 的模型 ( gguf 格式)。您可以自行從 HuggingFace 或其他模型代管平台下載模型檔案，放置到本系統指定的目錄下，再重新啟動本系統即可自動偵測到。<LineBreak />

@@ -3,6 +3,10 @@ using AiyoDesk.LocalHost;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
+using Material.Styles.Controls;
+using Material.Styles.Models;
+using System;
 
 namespace AiyoDesk.Pages;
 
@@ -30,6 +34,17 @@ public partial class PagePackages : UserControl
         LlamaCppServicePanel.Content = llamacppServicePanel;
         openWebUIServicePanel.InitializePackage(ServiceCenter.openWebUIService);
         OpenWebUIServicePanel.Content = openWebUIServicePanel;
+    }
+
+    public void manageButtonState()
+    {
+        Dispatcher.UIThread.Invoke(() =>
+        {
+            hostedHttpPanel.resetActButtons();
+            condaServicePanel.resetActButtons();
+            llamacppServicePanel.resetActButtons();
+            openWebUIServicePanel.resetActButtons();
+        });
     }
 
 }

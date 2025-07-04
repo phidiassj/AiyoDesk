@@ -3,6 +3,9 @@ using AiyoDesk.CommanandTools;
 using AiyoDesk.Models;
 using Avalonia.Controls;
 using Avalonia.Threading;
+using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace AiyoDesk.CustomControls;
 
@@ -20,6 +23,7 @@ public partial class PackagePanel : UserControl
         CurrentPackage = package;
         PackageName.Text = package.PackageName;
         PackageDescription.Text = package.PackageDescription;
+        PackageSetting.IsEnabled = (package.PackageHasActivateParameters || package.PackageCanActivateAndStop);
         manageButtonState();
         package.RunningStateChanged += packageStateChanged;
         package.InstalledStateChanged += packageStateChanged;
@@ -31,7 +35,17 @@ public partial class PackagePanel : UserControl
 
     private void packageStateChanged(object? s, bool state)
     {
-        Dispatcher.UIThread.Invoke(() => manageButtonState());
+        Dispatcher.UIThread.Invoke(() => {
+            if (state) PackageRun.IsEnabled = true;
+            manageButtonState();
+        });
+    }
+
+    internal void resetActButtons()
+    {
+        PackageRun.IsEnabled = true;
+        PackageStop.IsEnabled = true;
+        manageButtonState();
     }
 
     private void manageButtonState()
@@ -44,16 +58,31 @@ public partial class PackagePanel : UserControl
 
     private async void PackageRun_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        await CurrentPackage.PackageActivate();
+        PackageRun.IsEnabled = false;
+        var tsk = Task.Run(() => {
+            CurrentPackage.PackageActivate();
+        });
+
+        await Task.Delay(1);
     }
 
     private async void PackageStop_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
+        PackageStop.IsEnabled = false;
         await CurrentPackage.PackageStop();
     }
 
-    private void PackageSetting_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private async void PackageSetting_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
+        var currentSetting = CurrentPackage.PackageSetting;
+        if (currentSetting == null)
+        {
+            currentSetting = new Data.PackageSetting();
+            currentSetting.PackageName = CurrentPackage.PackageName;
+            currentSetting.LocalPort = currentSetting.LocalPort;
+            currentSetting.ActivateCommand = string.Empty;
+        }
+        var confirm = await MessageDialogHandler.ShowPackageSettingAsync(currentSetting, CurrentPackage.PackageCanActivateAndStop, CurrentPackage.PackageCanActivateAndStop, CurrentPackage.PackageHasActivateParameters);
     }
 
     private async void PackageInstall_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)

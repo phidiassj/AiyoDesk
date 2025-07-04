@@ -2,6 +2,8 @@ using AiyoDesk.LocalHost;
 using AiyoDesk.Pages;
 using Avalonia.Controls;
 using Avalonia.Threading;
+using Material.Styles.Controls;
+using Material.Styles.Models;
 using System;
 using System.Threading.Tasks;
 
@@ -14,6 +16,7 @@ public partial class MainWindow : Window
     public PagePackages pagePackages { get; internal set; } = new();
     public PageModelsManage pageModels { get; internal set; } = new();
     public PageMustInstall pageMustInstall { get; internal set; } = new();
+    public PageSettings pageSettings { get; internal set; } = new();
 
     public MainWindow()
     {
@@ -37,11 +40,22 @@ public partial class MainWindow : Window
         });
     }
 
+    public void showSnackBarMessage(string msg)
+    {
+        Dispatcher.UIThread.Invoke(() => { 
+            SnackbarHost.Post(
+                new SnackbarModel(msg, TimeSpan.FromSeconds(8)),
+                SnackbarHoster.HostName,
+                DispatcherPriority.Normal);
+        });
+    }
+
     private void showPageName(object TargetPage)
     {
         if (TargetPage.Equals(pagePackages))
         {
             AppBarTitle.Text = "整合套件";
+            pagePackages.manageButtonState();
         }
         else if (TargetPage.Equals(pageModels))
         {
@@ -50,6 +64,10 @@ public partial class MainWindow : Window
         else if (TargetPage.Equals(pageMustInstall))
         {
             AppBarTitle.Text = "安裝必須套件";
+        }
+        else if (TargetPage.Equals(pageSettings))
+        {
+            AppBarTitle.Text = "系統設定";
         }
     }
 
@@ -68,6 +86,12 @@ public partial class MainWindow : Window
     {
         contentContrainer.Content = pageModels;
         showPageName(pageModels);
+    }
+
+    private void btnSettings_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        contentContrainer.Content = pageSettings;
+        showPageName(pageSettings);
     }
 }
 
