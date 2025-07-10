@@ -470,6 +470,8 @@ public class CommandLineExecutor : IDisposable
                     {
                         // 嘗試正常退出 cmd
                         SendInterrupt();
+                        Task.Delay(1000);
+                        SendInterrupt();
                         _cmdProcess.StandardInput.WriteLine("exit");
                         _cmdProcess.StandardInput.Flush();
 

@@ -17,5 +17,26 @@ public class InstalledModelItem
     {
         get { return (Vision ? "是" : "否"); }
     }
-
+    public string SubDir
+    {
+        get
+        {
+            if (FunctionCall && Vision)
+            {
+                return "llm_tools_vision";
+            }
+            else if (FunctionCall)
+            {
+                return "llm_tools";
+            }
+            else if (Vision)
+            {
+                return "llm_vision";
+            }
+            else
+            {
+                return "llm";
+            }
+        }
+    }
 }

@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AiyoDesk.Data;
@@ -32,6 +33,42 @@ public class DatabaseManager : IDisposable
         }
         await dbContext.SaveChangesAsync();
         return result;
+    }
+
+    public async Task SaveBackendUseGPU(bool useGpu)
+    {
+        SystemSetting exSetting = GetSystemSetting();
+        exSetting.BackendUseGPU = useGpu;
+        dbContext.SystemSettings.Update(exSetting);
+        await dbContext.SaveChangesAsync();
+    }
+    public async Task SavePassPackageCheck()
+    {
+        SystemSetting exSetting = GetSystemSetting();
+        exSetting.PassPackageCheck = true;
+        dbContext.SystemSettings.Update(exSetting);
+        await dbContext.SaveChangesAsync();
+    }
+    public async Task SaveSystemSetting(SystemSetting systemSetting)
+    {
+        SystemSetting exSetting = GetSystemSetting();
+        dbContext.SystemSettings.Update(systemSetting);
+        await dbContext.SaveChangesAsync();
+    }
+    public SystemSetting GetSystemSetting()
+    {
+        SystemSetting systemSetting = null!;
+        if (dbContext.SystemSettings.Count() <= 0)
+        {
+            systemSetting = new SystemSetting();
+            systemSetting = dbContext.SystemSettings.Add(systemSetting).Entity;
+            dbContext.SaveChanges();
+        }
+        else
+        {
+            systemSetting = dbContext.SystemSettings.First();
+        }
+        return systemSetting;
     }
 
     private AiyoDeskDB dbContext = null!;

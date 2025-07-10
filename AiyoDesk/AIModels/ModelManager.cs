@@ -70,8 +70,6 @@ public class ModelManager
                 newItem.VisionModel = Path.Combine(subDir.FullName, "mmproj.gguf");
             }
             typeGroup.Add(newItem);
-
-            if (newItem.PathName.Contains("gemma-3-4b-it")) UsingLlmModel = newItem;
         }
 
     }

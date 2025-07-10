@@ -5,6 +5,7 @@ using Avalonia.Threading;
 using Material.Styles.Controls;
 using Material.Styles.Models;
 using System;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace AiyoDesk;
@@ -13,6 +14,7 @@ public partial class MainWindow : Window
 {
     public static MainWindow mainWindow { get; private set; } = default!;
     public ServiceCenter serviceCenter { get; internal set; } = default!;
+    public PageMain pageMain { get; internal set; } = new();
     public PagePackages pagePackages { get; internal set; } = new();
     public PageModelsManage pageModels { get; internal set; } = new();
     public PageMustInstall pageMustInstall { get; internal set; } = new();
@@ -23,13 +25,23 @@ public partial class MainWindow : Window
         InitializeComponent();
         mainWindow = this;
         pagePackages.mainWindow = this;
+        pageMustInstall.mainWindow = this;
         serviceCenter = new ServiceCenter(() =>
         {
             pagePackages.InitializePackages();
+            pageMustInstall.CheckInstalledPackage();
+            if (ServiceCenter.databaseManager.GetSystemSetting().PassPackageCheck || 
+                (ServiceCenter.condaService.PackageInstalled && ServiceCenter.llamaCppService.PackageInstalled))
+            {
+                SwitchPage(pageMain);
+            }
+            else
+            {
+                SwitchPage(pageMustInstall);
+            }
         });
-        pageMustInstall.mainWindow = this;
-        contentContrainer.Content = pageMustInstall;
-        showPageName(pageMustInstall);
+        //contentContrainer.Content = pageMain;
+        //showPageName(pageMain);
     }
 
     public void SwitchPage(object TargetPage)
@@ -69,6 +81,10 @@ public partial class MainWindow : Window
         {
             AppBarTitle.Text = "系統設定";
         }
+        else if (TargetPage.Equals(pageMain))
+        {
+            AppBarTitle.Text = "資訊首頁";
+        }
     }
 
     private void NavDrawerSwitch_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -92,6 +108,12 @@ public partial class MainWindow : Window
     {
         contentContrainer.Content = pageSettings;
         showPageName(pageSettings);
+    }
+
+    private void btnMain_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        contentContrainer.Content = pageMain;
+        showPageName(pageMain);
     }
 }
 

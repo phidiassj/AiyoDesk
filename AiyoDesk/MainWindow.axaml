@@ -18,8 +18,8 @@
 								   dialogHostAvalonia:DialogHostStyle.CornerRadius="8" BorderBrush="{DynamicResource MaterialDividerBrush}">
 		<controls:SnackbarHost HostName="Root">
 			<controls:NavigationDrawer Name="LeftDrawer" Classes="permanent" LeftDrawerWidth="160">
+				
 				<controls:NavigationDrawer.LeftDrawerContent>
-					
 					<controls:ColorZone Name="LeftDrawerContainer" Mode="Standard">
 						<ScrollViewer>
 							<Grid ColumnDefinitions="*" Name="MainSplitPaneGrid" Margin="10"
@@ -29,30 +29,33 @@
 										Padding="0,10,0,0" HorizontalAlignment="Center"
 										Classes="h1" Foreground="{DynamicResource MaterialColumnHeaderBrush }"
 									/>
+							<Button Name="btnMain" Content="{materialIcons:MaterialIconTextExt Kind=InformationOutline, Text=資訊首頁}"
+									Classes="navButton" Margin="5" Click="btnMain_Click"
+									Grid.Column="0" Grid.Row="2"
+								/>
 							<Button Name="btnPackages" Content="{materialIcons:MaterialIconTextExt Kind=PackageVariantAdd, Text=整合套件}"
 									Classes="navButton" Margin="5" Click="btnPackages_Click"
-									Grid.Column="0" Grid.Row="2"
+									Grid.Column="0" Grid.Row="3"
 								/>
 							<Button Name="btnModels" Content="{materialIcons:MaterialIconTextExt Kind=Molecule, Text=模型管理}"
 									Classes="navButton" Margin="5" Click="btnModels_Click"
-									Grid.Column="0" Grid.Row="3"
+									Grid.Column="0" Grid.Row="4"
 								/>
 							<Button Content="{materialIcons:MaterialIconTextExt Kind=ViewModule, Text=模組管理}"
 									Classes="navButton" Margin="5"
-									Grid.Column="0" Grid.Row="4"
+									Grid.Column="0" Grid.Row="5"
 								/>
 							<Button Content="{materialIcons:MaterialIconTextExt Kind=ShieldLock, Text=安全中心}"
 									Classes="navButton" Margin="5"
-									Grid.Column="0" Grid.Row="5"
-								/>
-							<Button Content="{materialIcons:MaterialIconTextExt Kind=ShieldLock, Text=系統設定}"
-									Classes="navButton" Margin="5" Click="btnSettings_Click"
 									Grid.Column="0" Grid.Row="6"
+								/>
+							<Button Content="{materialIcons:MaterialIconTextExt Kind=Cog, Text=系統設定}"
+									Classes="navButton" Margin="5" Click="btnSettings_Click"
+									Grid.Column="0" Grid.Row="7"
 								/>
 						</Grid>
 						</ScrollViewer>
 					</controls:ColorZone>
-				
 				</controls:NavigationDrawer.LeftDrawerContent>
 
 				<DockPanel LastChildFill="true">

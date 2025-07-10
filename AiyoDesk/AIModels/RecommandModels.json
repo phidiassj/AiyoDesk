@@ -12,7 +12,8 @@
     "ModelType": "chat",
     "HardwareRequired": "low",
     "FunctionCall": true,
-    "Vision": true
+    "Vision": true,
+    "ContextSize": 128000
   },
   {
     "ModelId": "twinkle-ai.Llama-3.2-3B-F1-Reasoning-Instruct-GGUF",
@@ -57,7 +58,8 @@
     "ModelType": "chat",
     "HardwareRequired": "medium",
     "FunctionCall": true,
-    "Vision": true
+    "Vision": true,
+    "ContextSize": 128000
   },
   {
     "ModelId": "gemma-3-1b-it-GGUF",
@@ -72,6 +74,7 @@
     "ModelType": "chat",
     "HardwareRequired": "low",
     "FunctionCall": true,
-    "Vision": false
+    "Vision": false,
+    "ContextSize": 32000
   }
 ]

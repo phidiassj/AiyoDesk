@@ -22,13 +22,19 @@ public partial class PageMustInstall : UserControl
         InitializeComponent();
     }
 
+    public void CheckInstalledPackage()
+    {
+        Dispatcher.UIThread.Invoke(() => {
+            if (ServiceCenter.llamaCppService.PackageInstalled) chkInstallLlamaCpp.IsChecked = false;
+            if (ServiceCenter.condaService.PackageInstalled) chkInstallConda.IsChecked = false;
+        });
+    }
+
     public void ClearAllCheck()
     {
         Dispatcher.UIThread.Invoke(() => {
             chkInstallLlamaCpp.IsChecked = false;
             chkInstallConda.IsChecked = false;
-            chkInstallGemma.IsChecked = false;
-            chkInstallOpenWebUI.IsChecked = false;
         });
     }
 
@@ -37,19 +43,11 @@ public partial class PageMustInstall : UserControl
         if (sender == null) return;
         if (sender.Equals(btnLlamaCpp))
         {
-            CommandLineExecutor.StartProcess(@"https://github.com/ggml-org/llama.cpp");
+            CommandLineExecutor.StartProcess(ServiceCenter.llamaCppService.PackageOfficialUrl);
         }
         else if (sender.Equals(btnConda))
         {
-            CommandLineExecutor.StartProcess(@"https://conda-forge.org");
-        }
-        else if (sender.Equals(btnGemma))
-        {
-            CommandLineExecutor.StartProcess(@"https://deepmind.google/models/gemma");
-        }
-        else if (sender.Equals(btnOpenWebUI))
-        {
-            CommandLineExecutor.StartProcess(@"https://docs.openwebui.com/");
+            CommandLineExecutor.StartProcess(ServiceCenter.condaService.PackageOfficialUrl);
         }
     }
 
@@ -78,13 +76,10 @@ public partial class PageMustInstall : UserControl
     {
         bool insConda = (chkInstallConda.IsChecked!.Value);
         bool insLlama = (chkInstallLlamaCpp.IsChecked!.Value);
-        bool insGemma = (chkInstallGemma.IsChecked!.Value);
-        bool insOpenWebUI = (chkInstallOpenWebUI.IsChecked!.Value);
 
         string confirmMsg = string.Empty;
         if (insConda) confirmMsg += $"安裝 {ServiceCenter.condaService.PackageName}\n";
         if (insLlama) confirmMsg += $"安裝 {ServiceCenter.llamaCppService.PackageName}\n";
-        if (insOpenWebUI) confirmMsg += $"安裝 {ServiceCenter.openWebUIService.PackageName}\n";
 
         if (string.IsNullOrWhiteSpace(confirmMsg))
         {
@@ -108,11 +103,6 @@ public partial class PageMustInstall : UserControl
             var result = await MessageDialogHandler.ShowLicenseAsync(ServiceCenter.llamaCppService);
             if (!result!.Equals(true)) return;
         }
-        if (insOpenWebUI)
-        {
-            var result = await MessageDialogHandler.ShowLicenseAsync(ServiceCenter.openWebUIService);
-            if (!result!.Equals(true)) return;
-        }
 
         string resultMsg = string.Empty;
         if (insConda)
@@ -131,22 +121,19 @@ public partial class PageMustInstall : UserControl
             try
             {
                 ServiceCenter.llamaCppService.UsingBackend = hardwareChoose;
+                if (hardwareChoose == BackendType.cpu)
+                {
+                    await ServiceCenter.databaseManager.SaveBackendUseGPU(false);
+                }
+                else
+                {
+                    await ServiceCenter.databaseManager.SaveBackendUseGPU(true);
+                }
                 await ServiceCenter.llamaCppService.PackageInstall();
             }
             catch
             {
                 resultMsg += $"安裝 {ServiceCenter.llamaCppService.PackageName} 發生錯誤\n";
-            }
-        }
-        if (insOpenWebUI)
-        {
-            try
-            {
-                _ = ServiceCenter.openWebUIService.PackageInstall();
-            }
-            catch
-            {
-                resultMsg += $"安裝 {ServiceCenter.openWebUIService.PackageName} 發生錯誤\n";
             }
         }
 
@@ -163,7 +150,9 @@ public partial class PageMustInstall : UserControl
 
     private async void btnCancel_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        var ret = await MessageDialogHandler.ShowMessageAsync("測試訊息內容", "測試訊息標題");
-        await Task.Delay(1);
+        var ret = await MessageDialogHandler.ShowConfirmAsync("下次軟體啟動時將不再顯示這個頁面\n\n確定執行嗎?");
+        if (ret == null || !ret.Equals(true)) return;
+        await ServiceCenter.databaseManager.SavePassPackageCheck();
+        mainWindow.SwitchPage(mainWindow.pageMain);
     }
 }
