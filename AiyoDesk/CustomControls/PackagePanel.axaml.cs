@@ -44,8 +44,11 @@ public partial class PackagePanel : UserControl
 
     internal void resetActButtons()
     {
-        PackageRun.IsEnabled = CurrentPackage.PackageCanActivateAndStop;
-        PackageStop.IsEnabled = CurrentPackage.PackageCanActivateAndStop;
+        if (!CurrentPackage.PackageActivating)
+        {
+            PackageRun.IsEnabled = CurrentPackage.PackageCanActivateAndStop;
+            PackageStop.IsEnabled = CurrentPackage.PackageCanActivateAndStop;
+        }
         manageButtonState();
     }
 
