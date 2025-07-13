@@ -37,4 +37,5 @@ public class SystemSetting
     public bool BackendUseGPU { get; set; }
     public string? DefaultModelName { get; set; }
     public string? DefaultModelSubDir { get; set; }
+    public string? OpenWebUIToken { get; set; }
 }

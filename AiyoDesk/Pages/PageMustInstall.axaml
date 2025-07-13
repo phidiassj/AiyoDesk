@@ -19,7 +19,7 @@
 			</TextBlock>
 			<TextBlock Margin="20 30 20 0" TextWrapping="Wrap" LetterSpacing="1" LineHeight="25">
 				<Run FontWeight="Bold">AiyoDesk</Run> 是一個整合軟體，所有功能模組都依賴社群開源的 llama.cpp 及 Conda Miniforge 作為 AI 服務的核心，您必須確認系統中存在這兩個軟體套件，才能正常使用本軟體所有功能。<LineBreak />
-				請按下方的 <Run FontWeight="Bold">開始安裝</Run> 按鈕，本軟體將自動為您安裝這兩個套件。<LineBreak />
+				請按下方的<Run FontWeight="Bold">開始安裝</Run>按鈕，本軟體將自動為您安裝這兩個套件。<LineBreak />
 				如果您的裝置已經安裝，或您準備自行手動安裝這兩個套件，請參考以下說明，並選擇 <Run FontWeight="Bold">略過</Run> 按鈕，本頁面將不會再自動出現。
 			</TextBlock>
 			<StackPanel Orientation="Horizontal" Margin="20 20 0 0">

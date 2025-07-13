@@ -111,7 +111,7 @@
 								DockPanel.Dock="Top"
 								HorizontalContentAlignment="Stretch"
 								HorizontalAlignment="Stretch"
-								HorizontalScrollBarVisibility="Disabled">
+								HorizontalScrollBarVisibility="Auto">
 								<Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 									<TransitioningContentControl x:Name="contentContrainer" Margin="0 20 0 0"
 										HorizontalAlignment="Stretch" VerticalAlignment="Top"

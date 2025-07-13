@@ -8,6 +8,7 @@ namespace AiyoDesk.Data;
 public class OpenWebUiDB : DbContext
 {
     public DbSet<ConfigEntity> Configs => Set<ConfigEntity>();
+    public DbSet<UserEntity> Users => Set<UserEntity>();
 
     private readonly string _dbPath;
 
@@ -38,4 +39,35 @@ public class ConfigEntity
 
     [Column("updated_at")]
     public DateTime? UpdatedAt { get; set; }
+}
+
+[Table("user")]
+public class UserEntity
+{
+    [Key]
+    [Column("id")]
+    public string Id { get; set; } = default!;
+    [Column("name")]
+    public string Name { get; set; } = default!;
+    [Column("email")]
+    public string EMail { get; set; } = default!;
+    [Column("role")]
+    public string Role { get; set; } = default!;
+    [Column("profile_image_url")]
+    public string ImageUrl { get; set; } = default!;
+    [Column("api_key")]
+    public string? ApiKey { get; set; }
+    [Column("created_at")]
+    public DateTime Created { get; set; }
+    [Column("updated_at")]
+    public DateTime Updated { get; set; }
+    [Column("last_active_at")]
+    public DateTime LastAct { get; set; }
+    [Column("settings")]
+    public string? Settings { get; set; }
+    [Column("info")]
+    public string? Info { get; set; }
+    [Column("oauth_sub")]
+    public string? AauthSub { get; set; }
+
 }

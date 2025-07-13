@@ -44,6 +44,9 @@
 								 Width="200" UseFloatingWatermark="True">
 						</TextBox>
 					</StackPanel>
+					<TextBlock Classes="Description" Margin="0 15 0 0" Foreground="Red">
+						修改的設置會在本軟體重新啟動後生效
+					</TextBlock>
 				</StackPanel>
 			</ScrollViewer>
 			<StackPanel Orientation="Horizontal" Background="{DynamicResource MaterialSecondaryMidBrush}">

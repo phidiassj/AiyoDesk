@@ -38,7 +38,7 @@ public partial class PackageSettingPanel : UserControl
         packageSetting.AutoActivate = chkAutoActivate.IsChecked!.Value;
         packageSetting.LocalPort = startPort;
         packageSetting.ActivateCommand = txtActivateParameters.Text;
-        await ServiceCenter.databaseManager.SavePackageSetting(packageSetting);
+        await ServiceCenter.serviceCenter.SavePackageSetting(packageSetting);
 
         DialogHost.GetDialogSession("MainDialogHost")?.Close(true);
     }

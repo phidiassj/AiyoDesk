@@ -35,6 +35,13 @@ public class DatabaseManager : IDisposable
         return result;
     }
 
+    public async Task SaveOpenWebUIToken(string token)
+    {
+        SystemSetting exSetting = GetSystemSetting();
+        exSetting.OpenWebUIToken = token;
+        dbContext.SystemSettings.Update(exSetting);
+        await dbContext.SaveChangesAsync();
+    }
     public async Task SaveBackendUseGPU(bool useGpu)
     {
         SystemSetting exSetting = GetSystemSetting();

@@ -3,8 +3,10 @@ using AiyoDesk.AIModels;
 using AiyoDesk.AppPackages;
 using AiyoDesk.CommanandTools;
 using AiyoDesk.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -21,6 +23,7 @@ public class ServiceCenter
     public static CondaService condaService { get; set; } = default!;
     public static LlamaCppService llamaCppService { get; set; } = default!;
     public static OpenWebUIService openWebUIService { get; set; } = default!;
+    public static ServiceCenter serviceCenter { get; set; } = default!;
 
     public static ModelManager modelManager { get; internal set; } = new();
 
@@ -30,6 +33,7 @@ public class ServiceCenter
 
     public ServiceCenter()
     {
+        serviceCenter = this;
         _ = systemCommander.ActivateCondaEnv();
         hostedHttpService = new();
         condaService = new();
@@ -39,6 +43,7 @@ public class ServiceCenter
 
     public ServiceCenter(Action afterProcess)
     {
+        serviceCenter = this;
         _ = systemCommander.ActivateCondaEnv();
         hostedHttpService = new();
         condaService = new();
@@ -48,5 +53,150 @@ public class ServiceCenter
         InitFinishProcess?.Invoke();
     }
 
+    public async IAsyncEnumerable<string> ActivateAutoStartServices()
+    {
+        var llamaSetting = await databaseManager.GetPackageSetting(llamaCppService.PackageName);
+        if (llamaSetting != null && llamaSetting.AutoActivate && !llamaCppService.PackageRunning)
+        {
+            string errMsg = string.Empty;
+            yield return $"正在嘗試啟動 {llamaCppService.PackageName} ...";
+            try
+            {
+                await llamaCppService.PackageActivate();
+            }
+            catch(Exception ex)
+            {
+                errMsg = ex.Message;
+            }
+            if (errMsg != string.Empty)
+            {
+                yield return $"{llamaCppService.PackageName} 啟動失敗，錯誤:\n{errMsg}";
+            }
+            else
+            {
+                yield return $"正在等候 {llamaCppService.PackageName} 完成啟動...";
+                await Task.Delay(1000);
+                Stopwatch sw = Stopwatch.StartNew();
+                while (true)
+                {
+                    if (llamaCppService.PackageRunning || sw.Elapsed > TimeSpan.FromSeconds(60)) break;
+                    await Task.Delay(500);
+                }
+                sw.Stop();
+                if (llamaCppService.PackageRunning)
+                {
+                    yield return $"{llamaCppService.PackageName} 啟動成功";
+                }
+                else
+                {
+                    yield return $"{llamaCppService.PackageName} 因超過最大等候時間啟動失敗，請檢查系統訊息確認失敗原因";
+                }
+            }
+        }
 
+        var owuSetting = await databaseManager.GetPackageSetting(openWebUIService.PackageName);
+        if (owuSetting != null && owuSetting.AutoActivate && !openWebUIService.PackageRunning)
+        {
+            string errMsg = string.Empty;
+            yield return $"正在嘗試啟動 {openWebUIService.PackageName} ...";
+            try
+            {
+                await openWebUIService.PackageActivate();
+            }
+            catch (Exception ex)
+            {
+                errMsg = ex.Message;
+            }
+            if (errMsg != string.Empty)
+            {
+                yield return $"{openWebUIService.PackageName} 啟動失敗，錯誤:\n{errMsg}";
+            }
+            else
+            {
+                yield return $"正在等候 {openWebUIService.PackageName} 完成啟動...";
+                await Task.Delay(1000);
+                Stopwatch sw = Stopwatch.StartNew();
+                while (true)
+                {
+                    if (openWebUIService.PackageRunning || sw.Elapsed > TimeSpan.FromSeconds(180)) break;
+                    await Task.Delay(500);
+                }
+                sw.Stop();
+                if (openWebUIService.PackageRunning)
+                {
+                    yield return $"{openWebUIService.PackageName} 啟動成功";
+                }
+                else
+                {
+                    yield return $"{openWebUIService.PackageName} 因超過最大等候時間啟動失敗，請檢查系統訊息確認失敗原因";
+                }
+            }
+        }
+
+        var httpSetting = await databaseManager.GetPackageSetting(hostedHttpService.PackageName);
+        if (httpSetting != null && httpSetting.AutoActivate && !hostedHttpService.PackageRunning)
+        {
+            string errMsg = string.Empty;
+            yield return $"正在嘗試啟動 {hostedHttpService.PackageName} ...";
+            try
+            {
+                await hostedHttpService.PackageActivate();
+            }
+            catch (Exception ex)
+            {
+                errMsg = ex.Message;
+            }
+            if (errMsg != string.Empty)
+            {
+                yield return $"{hostedHttpService.PackageName} 啟動失敗，錯誤:\n{errMsg}";
+            }
+            else
+            {
+                yield return $"正在等候 {hostedHttpService.PackageName} 完成啟動...";
+                await Task.Delay(1000);
+                Stopwatch sw = Stopwatch.StartNew();
+                while (true)
+                {
+                    if (hostedHttpService.PackageRunning || sw.Elapsed > TimeSpan.FromSeconds(20)) break;
+                    await Task.Delay(500);
+                }
+                sw.Stop();
+                if (hostedHttpService.PackageRunning)
+                {
+                    yield return $"{hostedHttpService.PackageName} 啟動成功";
+                }
+                else
+                {
+                    yield return $"{hostedHttpService.PackageName} 因超過最大等候時間啟動失敗，請檢查系統訊息確認失敗原因";
+                }
+            }
+        }
+
+        yield return $"自動啟動作業完成";
+        yield break;
+    }
+
+    public async Task<PackageSetting> SavePackageSetting(PackageSetting packageSetting)
+    {
+        if (packageSetting.PackageName == llamaCppService.PackageName && 
+            packageSetting.LocalPort != llamaCppService.ServicePort && 
+            OpenWebUIService.CheckLocalDBFileExists())
+        {
+            using OpenWebUiDB openWebUiDB = new(OpenWebUIService.GetLocalDBFilePath());
+            string originUrl = $"http://127.0.0.1:{llamaCppService.ServicePort}";
+            List<ConfigEntity> configs = await openWebUiDB.Configs.Where(x => x.DataJson.Contains(originUrl)).ToListAsync();
+            string newUrl = $"http://127.0.0.1:{packageSetting.LocalPort}";
+            bool needSave = false;
+            foreach (ConfigEntity config in configs)
+            {
+                config.DataJson = config.DataJson.Replace(originUrl, newUrl);
+                openWebUiDB.Configs.Update(config);
+                needSave = true;
+            }
+            if (needSave) await openWebUiDB.SaveChangesAsync();
+        }
+
+        PackageSetting result = await databaseManager.SavePackageSetting(packageSetting);
+        return result;
+    }
 }

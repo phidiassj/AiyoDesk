@@ -10,5 +10,28 @@
 		     MinWidth="600" MinHeight="400" MaxWidth="1030"
 			 HorizontalAlignment="Center" VerticalAlignment="Top"
              x:Class="AiyoDesk.Pages.PageMain">
-  
+
+	<Border Padding="10" HorizontalAlignment="Stretch">
+		<StackPanel Orientation="Vertical" MaxWidth="1200"
+					HorizontalAlignment="Stretch" VerticalAlignment="Top">
+			<TextBlock TextWrapping="Wrap" Classes="h1" TextAlignment="Center" Margin="0 20 0 0">
+				歡迎使用 AiyoDesk
+			</TextBlock>
+			<TextBlock Text="系統資訊" Classes="h3" Margin="10 30 0 5" />
+			<Border Padding="0" HorizontalAlignment="Stretch"
+					BorderThickness="1" CornerRadius="5" BorderBrush="{DynamicResource MaterialDividerBrush}">
+				<StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="20" Spacing="10">
+					<StackPanel Orientation="Horizontal" Spacing="10">
+						<TextBlock Classes="ColHeader" Width="150">Conda</TextBlock>
+						<TextBlock x:Name="tbCondaStatus">確認中...</TextBlock>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" Spacing="10">
+						<TextBlock Classes="ColHeader" Width="150">llama.cpp</TextBlock>
+						<TextBlock x:Name="tbLlamaStatus">確認中...</TextBlock>
+					</StackPanel>
+				</StackPanel>
+			</Border>
+		</StackPanel>
+	</Border>
+	
 </UserControl>
