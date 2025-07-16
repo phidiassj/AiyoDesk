@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\AiyoCoveX.Shared\AiyoCoveX.Shared.csproj" />
     <ProjectReference Include="..\AiyoCoveX.Host.Client\AiyoCoveX.Host.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.16" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel.Core" Version="2.3.0" />

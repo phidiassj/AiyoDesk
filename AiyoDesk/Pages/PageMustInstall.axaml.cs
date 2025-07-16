@@ -1,13 +1,11 @@
+using AiyoDesk.AIModels;
 using AiyoDesk.CommanandTools;
-using AiyoDesk.CustomControls;
+using AiyoDesk.Data;
 using AiyoDesk.LocalHost;
 using AiyoDesk.Models;
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
-using DialogHostAvalonia;
-using System.Threading.Tasks;
+using System.Linq;
 using static AiyoDesk.AppPackages.LlamaCppService;
 
 namespace AiyoDesk.Pages;
@@ -16,10 +14,12 @@ public partial class PageMustInstall : UserControl
 {
     public MainWindow mainWindow = default!;
     private BackendType hardwareChoose { get; set; } = BackendType.cpu;
+    private RecommandModelItem defaultModel { get; set; } = null!;
 
     public PageMustInstall()
     {
         InitializeComponent();
+        defaultModel = ServiceCenter.modelManager.RecommandModels.First(x => x.Name == "gemma-3-4b-it");
     }
 
     public void CheckInstalledPackage()
@@ -51,6 +51,27 @@ public partial class PageMustInstall : UserControl
         }
     }
 
+    private void rdoModel_Checked(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (sender == null) return;
+        if (sender.Equals(rdoModelGemma4b))
+        {
+            defaultModel = ServiceCenter.modelManager.RecommandModels.First(x => x.Name == "gemma-3-4b-it");
+        }
+        else if (sender.Equals(rdoModelTwinkle3bF1))
+        {
+            defaultModel = ServiceCenter.modelManager.RecommandModels.First(x => x.Name == "twinkle-ai.Llama-3.2-3B-F1-Instruct");
+        }
+        else if (sender.Equals(rdoModelGemma12b))
+        {
+            defaultModel = ServiceCenter.modelManager.RecommandModels.First(x => x.Name == "gemma-3-12b-it");
+        }
+        else if (sender.Equals(rdoModelGemma1b))
+        {
+            defaultModel = ServiceCenter.modelManager.RecommandModels.First(x => x.Name == "gemma-3-1b-it");
+        }
+    }
+
     private void rdoHardware_Checked(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         if (sender == null) return;
@@ -74,12 +95,16 @@ public partial class PageMustInstall : UserControl
 
     private async void btnStart_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        bool insConda = (chkInstallConda.IsChecked!.Value);
-        bool insLlama = (chkInstallLlamaCpp.IsChecked!.Value);
+        bool insConda = (chkInstallConda.IsChecked!.Value && !ServiceCenter.condaService.PackageInstalled);
+        bool insLlama = (chkInstallLlamaCpp.IsChecked!.Value && !ServiceCenter.llamaCppService.PackageInstalled);
+        bool insModel = (chkInstallAiModel.IsChecked!.Value && !defaultModel.IsModelInstalled());
+        bool insOpenWebUI = (chkInstallOpenWebUI.IsChecked!.Value && !ServiceCenter.openWebUIService.PackageInstalled);
 
         string confirmMsg = string.Empty;
         if (insConda) confirmMsg += $"安裝 {ServiceCenter.condaService.PackageName}\n";
         if (insLlama) confirmMsg += $"安裝 {ServiceCenter.llamaCppService.PackageName}\n";
+        if (insModel) confirmMsg += $"安裝模型 {defaultModel.Name}\n";
+        if (insOpenWebUI) confirmMsg += $"安裝 {ServiceCenter.openWebUIService.PackageName}\n";
 
         if (string.IsNullOrWhiteSpace(confirmMsg))
         {
@@ -93,6 +118,9 @@ public partial class PageMustInstall : UserControl
         var ret = await MessageDialogHandler.ShowConfirmAsync(confirmMsg, "安裝提示");
         if (ret == null || !ret.Equals(true)) return;
 
+        if (insModel || insOpenWebUI)
+            await MessageDialogHandler.ShowMessageAsync("安裝期間視您的網路狀況可能費時較久，\n請不要關閉本軟體，並且避免電腦進入休眠狀態，\n以免安裝失敗。");
+
         if (insConda)
         {
             var result = await MessageDialogHandler.ShowLicenseAsync(ServiceCenter.condaService);
@@ -101,6 +129,16 @@ public partial class PageMustInstall : UserControl
         if (insLlama)
         {
             var result = await MessageDialogHandler.ShowLicenseAsync(ServiceCenter.llamaCppService);
+            if (!result!.Equals(true)) return;
+        }
+        if (insModel)
+        {
+            var result = await MessageDialogHandler.ShowLicenseAsync(defaultModel);
+            if (!result!.Equals(true)) return;
+        }
+        if (insOpenWebUI)
+        {
+            var result = await MessageDialogHandler.ShowLicenseAsync(ServiceCenter.openWebUIService);
             if (!result!.Equals(true)) return;
         }
 
@@ -136,10 +174,43 @@ public partial class PageMustInstall : UserControl
                 resultMsg += $"安裝 {ServiceCenter.llamaCppService.PackageName} 發生錯誤\n";
             }
         }
+        if (insModel)
+        {
+            try
+            {
+                defaultModel.ModelInstall();
+                ServiceCenter.modelManager.LoadInstalledModels();
+                var insedModel = ServiceCenter.modelManager.ChatModels.FirstOrDefault(x => x.ModelName == defaultModel.Name);
+                if (insedModel != null)
+                {
+                    ServiceCenter.modelManager.UsingLlmModel = insedModel;
+                    SystemSetting systemSetting = ServiceCenter.databaseManager.GetSystemSetting();
+                    systemSetting.DefaultModelName = insedModel.ModelName;
+                    systemSetting.DefaultModelSubDir = insedModel.SubDir;
+                    await ServiceCenter.databaseManager.SaveSystemSetting(systemSetting);
+                }
+            }
+            catch
+            {
+                resultMsg += $"安裝 {defaultModel.Name} 發生錯誤\n";
+            }
+        }
+        if (insOpenWebUI)
+        {
+            try
+            {
+                await ServiceCenter.openWebUIService.PackageInstall();
+            }
+            catch
+            {
+                resultMsg += $"安裝 {ServiceCenter.condaService.PackageName} 發生錯誤\n";
+            }
+        }
 
         if (string.IsNullOrWhiteSpace(resultMsg))
         {
-            await MessageDialogHandler.ShowMessageAsync("要求的作業已經執行完成");
+            await MessageDialogHandler.ShowMessageAsync("要求的作業已經執行完成，\n建議您先關閉本軟體後重新執行。");
+            mainWindow.SwitchPage(mainWindow.pagePackages);
         }
         else
         {

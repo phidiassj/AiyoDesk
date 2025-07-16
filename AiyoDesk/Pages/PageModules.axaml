@@ -1,0 +1,14 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AiyoDesk.Pages.PageModules">
+
+	<Border Padding="10" HorizontalAlignment="Stretch">
+		<StackPanel Orientation="Vertical" MaxWidth="1200" HorizontalAlignment="Stretch" Margin="0 20 0 0">
+			<TextBlock Text="本功能尚未開放" Classes="h3" Margin="0 30 0 0" HorizontalAlignment="Center" />
+		</StackPanel>
+	</Border>
+	
+</UserControl>

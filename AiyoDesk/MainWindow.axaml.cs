@@ -1,12 +1,14 @@
 using AiyoDesk.LocalHost;
+using AiyoDesk.Models;
 using AiyoDesk.Pages;
 using Avalonia.Controls;
 using Avalonia.Threading;
+using DialogHostAvalonia;
 using Material.Styles.Controls;
 using Material.Styles.Models;
+using Microsoft.FluentUI.AspNetCore.Components;
 using System;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
+using System.Linq;
 
 namespace AiyoDesk;
 
@@ -19,6 +21,9 @@ public partial class MainWindow : Window
     public PageModelsManage pageModels { get; internal set; } = new();
     public PageMustInstall pageMustInstall { get; internal set; } = new();
     public PageSettings pageSettings { get; internal set; } = new();
+    public PageModules pageModules { get; internal set; } = new();
+
+    private bool _forceClosing = false;
 
     public MainWindow()
     {
@@ -34,14 +39,56 @@ public partial class MainWindow : Window
                 (ServiceCenter.condaService.PackageInstalled && ServiceCenter.llamaCppService.PackageInstalled))
             {
                 SwitchPage(pageMain);
+                _ = pageMain.SystemStartupProcess();
             }
             else
             {
                 SwitchPage(pageMustInstall);
             }
         });
+        this.Closing += MainWindow_Closing;
+        setTrayIcon();
         //contentContrainer.Content = pageMain;
         //showPageName(pageMain);
+    }
+
+    void setTrayIcon()
+    {
+        if (ServiceCenter.databaseManager.GetSystemSetting().MinToSystemTray == false) return;
+
+        var trayIcons = TrayIcon.GetIcons(App.Current!);
+        if (trayIcons == null) return;
+        var trayIcon = trayIcons.FirstOrDefault();
+        if (trayIcon == null || trayIcon.Menu == null || trayIcon.Menu.Count() <= 0) return;
+        trayIcon.IsVisible = true;
+        foreach (var menuItem in trayIcon.Menu)
+        {
+            if (menuItem == null || !(menuItem is NativeMenuItem item)) continue;
+            if (item.Header == "開啟")
+            {
+                item.Click += (s, e) => {
+                    Dispatcher.UIThread.Invoke(() => { 
+                        if (this.WindowState == WindowState.Minimized)
+                        {
+                            this.WindowState = WindowState.Normal;
+                        }
+                        this.Show(); 
+                    });
+                };
+            }
+            else if (item.Header == "退出")
+            {
+                item.Click += (s, e) => {
+                    Dispatcher.UIThread.Invoke(() => {
+                        if (this.WindowState == WindowState.Minimized)
+                        {
+                            this.WindowState = WindowState.Normal;
+                        }
+                        this.Close(); 
+                    });
+                };
+            }
+        }
     }
 
     public void SwitchPage(object TargetPage)
@@ -84,6 +131,12 @@ public partial class MainWindow : Window
         else if (TargetPage.Equals(pageMain))
         {
             AppBarTitle.Text = "資訊首頁";
+            pageMain.RefreshSystemInfo();
+        }
+        else if (TargetPage.Equals(pageModules))
+        {
+            AppBarTitle.Text = "功能模組";
+            pageMain.RefreshSystemInfo();
         }
     }
 
@@ -94,26 +147,50 @@ public partial class MainWindow : Window
 
     private void btnPackages_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        contentContrainer.Content = pagePackages;
-        showPageName(pagePackages);
+        SwitchPage(pagePackages);
     }
 
     private void btnModels_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        contentContrainer.Content = pageModels;
-        showPageName(pageModels);
+        SwitchPage(pageModels);
     }
 
     private void btnSettings_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        contentContrainer.Content = pageSettings;
-        showPageName(pageSettings);
+        SwitchPage(pageSettings);
     }
 
     private void btnMain_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        contentContrainer.Content = pageMain;
-        showPageName(pageMain);
+        SwitchPage(pageMain);
+    }
+
+    private void btnModules_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        SwitchPage(pageModules);
+    }
+
+    private async void MainWindow_Closing(object? sender, Avalonia.Controls.WindowClosingEventArgs e)
+    {
+        if (_forceClosing) return;
+        e.Cancel = true;
+
+        if (ServiceCenter.hostedHttpService.PackageRunning || 
+            ServiceCenter.llamaCppService.PackageRunning || 
+            ServiceCenter.openWebUIService.PackageRunning)
+        {
+            var result = await MessageDialogHandler.ShowConfirmAsync("仍有背景服務正在運行中，關閉本軟體將同時關閉這些服務。\n\n確定要立即關閉本軟體嗎?");
+            if (result == null || !result.Equals(true))
+            {
+                e.Cancel = true;
+                return;
+            }
+            this.IsEnabled = false;
+            await serviceCenter.Disposing();
+        }
+
+        _forceClosing = true;
+        this.Close();
     }
 }
 

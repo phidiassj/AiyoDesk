@@ -3,13 +3,14 @@ using AiyoDesk.AIModels;
 using AiyoDesk.AppPackages;
 using AiyoDesk.CommanandTools;
 using AiyoDesk.Data;
+using Avalonia.Controls;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace AiyoDesk.LocalHost;
@@ -28,6 +29,7 @@ public class ServiceCenter
     public static ModelManager modelManager { get; internal set; } = new();
 
     public static bool CondaEnvExists { get; internal set; }
+    public static IPAddress? ServiceIP { get; set; }
 
     public Action? InitFinishProcess { get; set; }
 
@@ -79,7 +81,7 @@ public class ServiceCenter
                 Stopwatch sw = Stopwatch.StartNew();
                 while (true)
                 {
-                    if (llamaCppService.PackageRunning || sw.Elapsed > TimeSpan.FromSeconds(60)) break;
+                    if (llamaCppService.PackageRunning || sw.Elapsed > TimeSpan.FromSeconds(120)) break;
                     await Task.Delay(500);
                 }
                 sw.Stop();
@@ -176,6 +178,25 @@ public class ServiceCenter
         yield break;
     }
 
+    public Dictionary<string, Dictionary<string, string>> GetServiceMenu()
+    {
+        Dictionary<string, Dictionary<string, string>> result = new();
+        result.Add("交談介面", new Dictionary<string, string>());
+        if (llamaCppService.PackageRunning)
+        {
+            string serviceUrl = string.Empty;
+            if (ServiceIP != null) serviceUrl = $"http://{ServiceIP}:{llamaCppService.ServicePort}";
+            result["交談介面"].Add(llamaCppService.PackageName, serviceUrl);
+        }
+        if (openWebUIService.PackageRunning)
+        {
+            string serviceUrl = string.Empty;
+            if (ServiceIP != null) serviceUrl = $"http://{ServiceIP}:{openWebUIService.ServicePort}";
+            result["交談介面"].Add(openWebUIService.PackageName, serviceUrl);
+        }
+        return result;
+    }
+
     public async Task<PackageSetting> SavePackageSetting(PackageSetting packageSetting)
     {
         if (packageSetting.PackageName == llamaCppService.PackageName && 
@@ -199,4 +220,33 @@ public class ServiceCenter
         PackageSetting result = await databaseManager.SavePackageSetting(packageSetting);
         return result;
     }
+
+    internal async Task Disposing()
+    {
+        if (openWebUIService.PackageRunning)
+        {
+            try
+            {
+                await openWebUIService.PackageStop();
+            }
+            catch { }
+        }
+        if (llamaCppService.PackageRunning)
+        {
+            try
+            {
+                await llamaCppService.PackageStop();
+            }
+            catch { }
+        }
+        if (hostedHttpService.PackageRunning)
+        {
+            try
+            {
+                await hostedHttpService.PackageStop();
+            }
+            catch { }
+        }
+    }
+
 }

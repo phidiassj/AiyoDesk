@@ -98,7 +98,7 @@ public partial class PackagePanel : UserControl
             currentSetting.ActivateCommand = string.Empty;
         }
         var confirm = await MessageDialogHandler.ShowPackageSettingAsync(currentSetting, CurrentPackage.PackageCanActivateAndStop, CurrentPackage.PackageCanActivateAndStop, CurrentPackage.PackageHasActivateParameters);
-        if (confirm != null && confirm.Equals(true)) await MessageDialogHandler.ShowMessageAsync("您可能必須重新啟動本軟體，設定才會生效。");
+        //if (confirm != null && confirm.Equals(true)) await MessageDialogHandler.ShowMessageAsync("您可能必須重新啟動本軟體，設定才會生效。");
     }
 
     private async void PackageInstall_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)

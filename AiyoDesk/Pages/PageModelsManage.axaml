@@ -8,7 +8,7 @@
 			 xmlns:aimodels="using:AiyoDesk.AIModels"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="1030" d:DesignHeight="780"
-		     MinWidth="350" MinHeight="400"
+		     MinWidth="350" MinHeight="400" MaxWidth="1030"
 			 HorizontalAlignment="Stretch" VerticalAlignment="Top" Padding="20"
              x:Class="AiyoDesk.Pages.PageModelsManage">
 	
@@ -34,7 +34,7 @@
 		<Border Padding="5" HorizontalAlignment="Stretch" Grid.Row="3"
 				BorderThickness="0" CornerRadius="5" BorderBrush="{DynamicResource MaterialDividerBrush}">
 			<WrapPanel x:Name="RecommandContainer" Orientation="Horizontal" ItemsAlignment="Start" 
-						ItemSpacing="20" LineSpacing="10"
+						ItemSpacing="10" LineSpacing="10"
 						HorizontalAlignment="Stretch" MinWidth="350">
 			</WrapPanel>
 		</Border>

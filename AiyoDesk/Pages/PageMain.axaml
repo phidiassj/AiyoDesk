@@ -12,22 +12,39 @@
              x:Class="AiyoDesk.Pages.PageMain">
 
 	<Border Padding="10" HorizontalAlignment="Stretch">
-		<StackPanel Orientation="Vertical" MaxWidth="1200"
-					HorizontalAlignment="Stretch" VerticalAlignment="Top">
+		<StackPanel Orientation="Vertical" MaxWidth="1200" HorizontalAlignment="Stretch" Margin="0 20 0 0">
 			<TextBlock TextWrapping="Wrap" Classes="h1" TextAlignment="Center" Margin="0 20 0 0">
 				歡迎使用 AiyoDesk
 			</TextBlock>
 			<TextBlock Text="系統資訊" Classes="h3" Margin="10 30 0 5" />
 			<Border Padding="0" HorizontalAlignment="Stretch"
 					BorderThickness="1" CornerRadius="5" BorderBrush="{DynamicResource MaterialDividerBrush}">
-				<StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="20" Spacing="10">
-					<StackPanel Orientation="Horizontal" Spacing="10">
-						<TextBlock Classes="ColHeader" Width="150">Conda</TextBlock>
-						<TextBlock x:Name="tbCondaStatus">確認中...</TextBlock>
+				<StackPanel Orientation="Vertical">
+					<StackPanel x:Name="panelStartupInfo" Orientation="Vertical" HorizontalAlignment="Stretch" Margin="20" 
+								IsVisible="True">
+						<ProgressBar IsIndeterminate="True" />
+						<TextBlock x:Name="tbStartupInfo" Margin="0 20 0 0" />
 					</StackPanel>
-					<StackPanel Orientation="Horizontal" Spacing="10">
-						<TextBlock Classes="ColHeader" Width="150">llama.cpp</TextBlock>
-						<TextBlock x:Name="tbLlamaStatus">確認中...</TextBlock>
+					<StackPanel x:Name="panelSystemInfo" Orientation="Vertical" HorizontalAlignment="Stretch" Margin="20" 
+								Spacing="10" IsVisible="False">
+						<StackPanel Orientation="Horizontal" Spacing="10">
+							<TextBlock Classes="ColHeader" Width="130">IPv4 服務入口</TextBlock>
+							<StackPanel Orientation="Vertical" x:Name="wpIPv4Entry">
+								<SelectableTextBlock x:Name="tbIPv4Prepare">確認中...</SelectableTextBlock>
+							</StackPanel>
+						</StackPanel>
+						<StackPanel Orientation="Horizontal" Spacing="10">
+							<TextBlock Classes="ColHeader" Width="130">內部使用埠號</TextBlock>
+							<StackPanel Orientation="Vertical">
+								<SelectableTextBlock x:Name="tbUsingPort">確認中...</SelectableTextBlock>
+								<TextBlock Margin="0 5 0 0" Foreground="Gray" FontWeight="DemiBold" Classes="Description">
+									基於安全因素考量，建議您為以上埠號設定安全保護。<LineBreak />
+									如果您僅在本機使用本軟體，可以在 windows 防火牆關閉這些埠號的外部連入。<LineBreak />
+									如果您在內網公用本軟體，可以在網路分享器設定禁止這些埠號的外部連入。<LineBreak />
+									本軟體目前不建議開放外網使用。
+								</TextBlock>
+							</StackPanel>
+						</StackPanel>
 					</StackPanel>
 				</StackPanel>
 			</Border>

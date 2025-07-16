@@ -30,10 +30,10 @@
 					</StackPanel>
 					<StackPanel Orientation="Vertical" MaxWidth="320">
 						<CheckBox x:Name="chkDisplaySystemTray" IsThreeState="False" IsChecked="False" IsCheckedChanged="Settings_IsCheckedChanged">
-							最小化到系統列圖示
+							顯示系統列圖示
 						</CheckBox>
 						<TextBlock Classes="Description" TextWrapping="Wrap" Margin="28 0 0 0">
-							AiyoDesk 最小化後會隱藏視窗並顯示系統列圖示
+							在 Windows 系統列顯示 AiyoDesk 圖示
 						</TextBlock>
 					</StackPanel>
 					<StackPanel Orientation="Vertical" MinWidth="320">

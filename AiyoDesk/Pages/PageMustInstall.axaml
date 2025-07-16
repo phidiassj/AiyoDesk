@@ -6,7 +6,7 @@
 			 xmlns:styles="clr-namespace:Material.Styles;assembly=Material.Styles"
 			 xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="1030" d:DesignHeight="780"
+             mc:Ignorable="d" d:DesignWidth="1030" d:DesignHeight="980"
 		     MinWidth="600" MinHeight="400" MaxWidth="1030"
 			 HorizontalAlignment="Center" VerticalAlignment="Top"
              x:Class="AiyoDesk.Pages.PageMustInstall">
@@ -15,10 +15,11 @@
 		<StackPanel Orientation="Vertical" MaxWidth="800" 
 					HorizontalAlignment="Center" VerticalAlignment="Top">
 			<TextBlock TextWrapping="Wrap" Classes="h3" TextAlignment="Center" Margin="0 20 0 0">
-				歡迎使用 AiyoDesk
+				初始化安裝
 			</TextBlock>
 			<TextBlock Margin="20 30 20 0" TextWrapping="Wrap" LetterSpacing="1" LineHeight="25">
 				<Run FontWeight="Bold">AiyoDesk</Run> 是一個整合軟體，所有功能模組都依賴社群開源的 llama.cpp 及 Conda Miniforge 作為 AI 服務的核心，您必須確認系統中存在這兩個軟體套件，才能正常使用本軟體所有功能。<LineBreak />
+				所有透過本軟體安裝的組件，都會在 Conda 虛擬環境內執行，並且統一安裝在同一磁碟路徑下，不會對您的原始系統造成混亂，也可以很輕鬆的移除。<LineBreak />
 				請按下方的<Run FontWeight="Bold">開始安裝</Run>按鈕，本軟體將自動為您安裝這兩個套件。<LineBreak />
 				如果您的裝置已經安裝，或您準備自行手動安裝這兩個套件，請參考以下說明，並選擇 <Run FontWeight="Bold">略過</Run> 按鈕，本頁面將不會再自動出現。
 			</TextBlock>
@@ -29,18 +30,19 @@
 				<HyperlinkButton x:Name="btnLlamaCpp" Click="OfficialLink_Click" Margin="5 0 0 0">官方網站</HyperlinkButton>
 			</StackPanel>
 			<TextBlock Margin="48 2 20 10" TextWrapping="Wrap">
-				請設定您的硬體類型以開始安裝 llama.cpp 軟體套件，如果您有符合要求的顯示卡，建議使用 GPU 運行。如果您要自行手動安裝，請務必在「套件安裝」頁面設定相關資訊。
+				請設定您的硬體類型以開始安裝 llama.cpp 軟體套件，如果您有符合要求的顯示卡，建議使用 GPU 運行。<LineBreak />
+				如果您要自行手動安裝，請務必在「套件安裝」頁面設定相關資訊。同時 llama-server.exe 必須在系統路徑內。
 			</TextBlock>
-			<RadioButton x:Name="rdoHardwareCPU" IsChecked="true" Checked="rdoHardware_Checked" Margin="45 0 0 0">
+			<RadioButton x:Name="rdoHardwareCPU" IsChecked="true" Checked="rdoHardware_Checked" GroupName="BackendType" Margin="45 0 0 0">
 				使用純 CPU 運行 AI 功能。
 			</RadioButton>
-			<RadioButton x:Name="rdoHardwareCuda" Checked="rdoHardware_Checked" Margin="45 0 0 0">
+			<RadioButton x:Name="rdoHardwareCuda" Checked="rdoHardware_Checked" GroupName="BackendType" Margin="45 0 0 0">
 				使用 CPU 及 NVidia GPU 運行 AI 功能。
 			</RadioButton>
-			<RadioButton x:Name="rdoHardwareHip" Checked="rdoHardware_Checked" Margin="45 0 0 0">
+			<RadioButton x:Name="rdoHardwareHip" Checked="rdoHardware_Checked" GroupName="BackendType" Margin="45 0 0 0">
 				使用 CPU 及 AMD GPU 運行 AI 功能。
 			</RadioButton>
-			<RadioButton x:Name="rdoHardwareIntel" Checked="rdoHardware_Checked" Margin="45 0 0 0">
+			<RadioButton x:Name="rdoHardwareIntel" Checked="rdoHardware_Checked" GroupName="BackendType" Margin="45 0 0 0">
 				使用 CPU 及 Intel GPU 運行 AI 功能。
 			</RadioButton>
 			<StackPanel Orientation="Horizontal" Margin="20 25 0 0">
@@ -52,6 +54,40 @@
 			<TextBlock Margin="48 2 20 10" TextWrapping="Wrap">
 				如果您要自行手動安裝，請務必在安裝完成之後，使用以下命令建立本系統專用的虛擬環境:<LineBreak/>
 				<Run FontSize="16"> conda create -n aiyodesk python=3.11</Run> 
+			</TextBlock>
+			<StackPanel Orientation="Horizontal" Margin="20 20 0 10">
+				<CheckBox x:Name="chkInstallAiModel" IsThreeState="False" IsChecked="true">
+					幫我安裝預設啟用的 AI 模型
+				</CheckBox>
+			</StackPanel>
+			<RadioButton x:Name="rdoModelGemma4b" IsChecked="true" Checked="rdoModel_Checked" GroupName="DefaultModel" Margin="45 0 0 0">
+				<TextBlock>
+					<Run FontWeight="Bold">Gemma-3-4b</Run> 建議在具備 3G VRAM 以上的顯示卡運行，具備視覺辨識及功能呼叫。
+				</TextBlock>
+			</RadioButton>
+			<RadioButton x:Name="rdoModelTwinkle3bF1" Checked="rdoModel_Checked" GroupName="DefaultModel" Margin="45 0 0 0">
+				<TextBlock>
+					<Run FontWeight="Bold">Twinkle-AI.Llama-3.2-3B-F1</Run> 可在 CPU 運行，具備功能呼叫。
+				</TextBlock>
+			</RadioButton>
+			<RadioButton x:Name="rdoModelGemma12b" Checked="rdoModel_Checked" GroupName="DefaultModel" Margin="45 0 0 0">
+				<TextBlock>
+					<Run FontWeight="Bold">Gemma-3-12b</Run> 建議在具備 16G VRAM 以上的顯示卡運行，具備視覺辨識及功能呼叫。
+				</TextBlock>
+			</RadioButton>
+			<RadioButton x:Name="rdoModelGemma1b" Checked="rdoModel_Checked" GroupName="DefaultModel" Margin="45 0 0 0">
+				<TextBlock>
+					<Run FontWeight="Bold">Gemma-3-1b</Run> 極輕量模型，系統效能不足時的最後選擇，具備功能呼叫。
+				</TextBlock>
+			</RadioButton>
+			<StackPanel Orientation="Horizontal" Margin="20 25 0 0">
+				<CheckBox x:Name="chkInstallOpenWebUI" IsThreeState="False" IsChecked="true">
+					幫我安裝 Open-WebUI 軟體套件
+				</CheckBox>
+				<HyperlinkButton x:Name="btnOpenWebUI" Click="OfficialLink_Click" Margin="5 0 0 0">官方網站</HyperlinkButton>
+			</StackPanel>
+			<TextBlock Margin="48 2 20 10" TextWrapping="Wrap">
+				Open-WebUI 提供極其豐富的 AI 交談介面，並內建語音、RAG等功能，同時提供與線上模型協作的機制，推薦做為您預設的 AI 交談介面。
 			</TextBlock>
 			<WrapPanel Orientation="Horizontal" ItemsAlignment="Center" ItemSpacing="20" Margin="40" HorizontalAlignment="Center">
 				<Button x:Name="btnStart" Click="btnStart_Click" Classes="cmdButton">開始安裝</Button>
