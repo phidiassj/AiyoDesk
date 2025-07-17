@@ -96,9 +96,9 @@ public partial class PageMustInstall : UserControl
     private async void btnStart_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         bool insConda = (chkInstallConda.IsChecked!.Value && !ServiceCenter.condaService.PackageInstalled);
-        bool insLlama = (chkInstallLlamaCpp.IsChecked!.Value && !ServiceCenter.llamaCppService.PackageInstalled);
+        bool insLlama = (chkInstallLlamaCpp.IsChecked!.Value && (!ServiceCenter.llamaCppService.PackageInstalled || !ServiceCenter.condaService.PackageInstalled));
         bool insModel = (chkInstallAiModel.IsChecked!.Value && !defaultModel.IsModelInstalled());
-        bool insOpenWebUI = (chkInstallOpenWebUI.IsChecked!.Value && !ServiceCenter.openWebUIService.PackageInstalled);
+        bool insOpenWebUI = (chkInstallOpenWebUI.IsChecked!.Value && (!ServiceCenter.openWebUIService.PackageInstalled || !ServiceCenter.condaService.PackageInstalled));
 
         string confirmMsg = string.Empty;
         if (insConda) confirmMsg += $"¦w¸Ë {ServiceCenter.condaService.PackageName}\n";

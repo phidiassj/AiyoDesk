@@ -9,6 +9,8 @@
     <ApplicationIcon>favicon.ico</ApplicationIcon>
     <PublishAot>False</PublishAot>
     <PublishTrimmed>False</PublishTrimmed>
+	<ApplicationVersion>0.1.2.*</ApplicationVersion>
+	<ApplicationRevision>1</ApplicationRevision>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
