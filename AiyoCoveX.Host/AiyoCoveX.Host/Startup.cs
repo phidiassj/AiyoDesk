@@ -19,6 +19,7 @@ public class Startup
         services.AddRazorComponents()
             .AddInteractiveServerComponents()
             .AddInteractiveWebAssemblyComponents();
+        services.AddHttpClient();
         services.AddFluentUIComponents();
         services.AddServerSideBlazor();
         services.AddControllers().AddJsonOptions(options =>
@@ -49,7 +50,7 @@ public class Startup
 
         app.UseStaticFiles();
         app.UseAntiforgery();
-
+        
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();

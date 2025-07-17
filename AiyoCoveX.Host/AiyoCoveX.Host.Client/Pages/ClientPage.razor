@@ -1,0 +1,36 @@
+﻿@page "/client"
+@page "/client/{EncodedUrl}"
+@rendermode InteractiveAuto
+
+@if (!string.IsNullOrEmpty(DecodedUrl))
+{
+    <iframe src="@DecodedUrl" style="display:block;width:100%;height:100%;border:none;"></iframe>
+}
+else
+{
+    <p>無效網址</p>
+}
+
+@code {
+    [Parameter]
+    public string? EncodedUrl { get; set; }
+
+    public string? DecodedUrl { get; set; }
+
+
+    protected override void OnParametersSet()
+    {
+        if (!string.IsNullOrEmpty(EncodedUrl))
+        {
+            try
+            {
+                DecodedUrl = System.Net.WebUtility.UrlDecode(EncodedUrl);
+            }
+            catch
+            {
+                DecodedUrl = null;
+            }
+        }
+    }
+
+}

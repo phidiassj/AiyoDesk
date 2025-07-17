@@ -1,4 +1,5 @@
-﻿@inherits LayoutComponentBase
+﻿@using AiyoCoveX.Host.Components.Control
+@inherits LayoutComponentBase
 
 <FluentDesignTheme Mode="@(DesignThemeModes.Dark)"
                    OfficeColor="@(OfficeColor.Windows)"
@@ -7,8 +8,10 @@
 
 <FluentLayout>
     <FluentHeader>
-        <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Left">
+        <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Left" VerticalAlignment="VerticalAlignment.Center">
             <FluentLabel Typo="Typography.H3" Weight="FontWeight.Bolder">AiyoDesk</FluentLabel>
+            <FluentSpacer />
+            <MainMenu />
             <FluentSpacer />
         </FluentStack>
     </FluentHeader>
@@ -16,11 +19,6 @@
         @* <NavMenu /> *@
         <FluentBodyContent Class="body-content">
             <div class="content">
-                <FluentToastProvider />
-                <FluentDialogProvider />
-                <FluentTooltipProvider />
-                <FluentMessageBarProvider />
-                <FluentMenuProvider />
                 @Body
             </div>
         </FluentBodyContent>
@@ -31,6 +29,12 @@
         <a href="https://learn.microsoft.com/en-us/aspnet/core/blazor" target="_blank">About Blazor</a>
     </FluentFooter>
 </FluentLayout>
+
+<FluentToastProvider @rendermode="RenderMode.InteractiveServer" />
+<FluentDialogProvider @rendermode="RenderMode.InteractiveServer" />
+<FluentTooltipProvider @rendermode="RenderMode.InteractiveServer" />
+<FluentMessageBarProvider @rendermode="RenderMode.InteractiveServer" />
+<FluentMenuProvider @rendermode="RenderMode.InteractiveServer" />
 
 
 <div id="blazor-error-ui" data-nosnippet>

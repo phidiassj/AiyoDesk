@@ -77,11 +77,14 @@ public partial class PageMain : UserControl
 
     private void removeOldLinkButton(StackPanel parentPanel)
     {
-        foreach(var control in parentPanel.Children)
+        try
         {
-            if (control is HyperlinkButton tgButton)
-                parentPanel.Children.Remove(control);
-        }
+            foreach(var control in parentPanel.Children)
+            {
+                if (control is HyperlinkButton tgButton)
+                    parentPanel.Children.Remove(control);
+            }
+        } catch { }
     }
 
     private void onLinkClick(object? s, RoutedEventArgs e)

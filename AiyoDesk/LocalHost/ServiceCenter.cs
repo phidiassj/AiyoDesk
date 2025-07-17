@@ -188,11 +188,19 @@ public class ServiceCenter
             if (ServiceIP != null) serviceUrl = $"http://{ServiceIP}:{llamaCppService.ServicePort}";
             result["交談介面"].Add(llamaCppService.PackageName, serviceUrl);
         }
+        else
+        {
+            result["交談介面"].Add(llamaCppService.PackageName, string.Empty);
+        }
         if (openWebUIService.PackageRunning)
         {
             string serviceUrl = string.Empty;
             if (ServiceIP != null) serviceUrl = $"http://{ServiceIP}:{openWebUIService.ServicePort}";
             result["交談介面"].Add(openWebUIService.PackageName, serviceUrl);
+        }
+        else
+        {
+            result["交談介面"].Add(openWebUIService.PackageName, string.Empty);
         }
         return result;
     }

@@ -1,0 +1,107 @@
+﻿@using AiyoCoveX.Host.Services
+@using Microsoft.FluentUI.AspNetCore.Components
+@* @inject MenuService MenuService *@
+@rendermode InteractiveServer
+
+<FluentStack Orientation="Orientation.Horizontal" HorizontalGap="10">
+
+    @if (MenuTree != null)
+    {
+        foreach (string treeName in MenuTree.Keys)
+        {
+
+            <FluentButton id="@(getMenuId(treeName))" Appearance="Appearance.Outline" @onclick="@(() => showCoreMenuItems(treeName))">
+                @treeName
+            </FluentButton>
+            @* <FluentPopover Style="width: 200px;" AnchorId="@(getMenuId(treeName))" Open="@(menuOpen(treeName))" OpenChanged="@(() => closeMenu())" AutoFocus="false">
+                <Body>
+                    <FluentStack Orientation="Orientation.Vertical" VerticalGap="5">
+                        @foreach (string nodeName in MenuTree[treeName].Keys)
+                        {
+                            <FluentButton Appearance="Appearance.Outline" 
+                                          Disabled="@(string.IsNullOrWhiteSpace(MenuTree[treeName][nodeName]))"
+                                          OnClick="@(() => menuItemClick(MenuTree[treeName][nodeName]))">
+                                @nodeName
+                            </FluentButton>
+                            <FluentMenuItem Disabled="@(string.IsNullOrWhiteSpace(MenuTree[treeName][nodeName]))" OnClick="@(() => menuItemClick(MenuTree[treeName][nodeName]))">@nodeName</FluentMenuItem>
+                        }
+                    </FluentStack>
+                </Body>
+            </FluentPopover> *@
+            <FluentMenu Anchor="@(getMenuId(treeName))" UseMenuService="true" Anchored="true" HorizontalPosition="HorizontalPosition.End"
+                        @bind-Open="isMenuOpen" VerticalThreshold="170">
+
+                @foreach (string nodeName in MenuTree[treeName].Keys)
+                {
+                    <FluentMenuItem Disabled="@(string.IsNullOrWhiteSpace(MenuTree[treeName][nodeName]))" 
+                                    OnClick="@(() => menuItemClick(MenuTree[treeName][nodeName]))">
+                        @nodeName
+                    </FluentMenuItem>
+                }
+
+            </FluentMenu>
+
+        }
+    }
+
+</FluentStack>
+
+@code {
+    Dictionary<string, Dictionary<string, string>>? MenuTree { get; set; }
+    string actMenuName = "nothing";
+    string lastTreeName = "nothing";
+    Dictionary<string, string> menuIdDic = new();
+    int menuId = 0;
+    bool isMenuOpen = false;
+
+    string getMenuId(string treeName)
+    {
+        if (treeName != lastTreeName)
+        {
+            menuId++;
+            lastTreeName = treeName;
+        }
+        string menuIdStr = $"coreMenu{menuId.ToString().PadLeft(2, '0')}";
+        if (!menuIdDic.Keys.Contains(treeName)) menuIdDic.Add(treeName, menuIdStr);
+
+        return $"coreMenu{menuId.ToString().PadLeft(2, '0')}";
+    }
+
+    bool menuOpen(string treeName)
+    {
+        return (treeName == actMenuName);
+    }
+
+    void closeMenu()
+    {
+        actMenuName = string.Empty;
+        StateHasChanged();
+    }
+
+    void showCoreMenuItems(string treeName)
+    {
+        actMenuName = menuIdDic[treeName];
+        isMenuOpen = !isMenuOpen;
+        StateHasChanged();
+    }
+
+    void menuItemClick(string url)
+    {
+        navManager.NavigateTo($"/client/{Uri.EscapeDataString(url)}");
+    }
+
+    void loadCoreMenu()
+    {
+        if (HostedService.RequestMenuItems != null)
+        {
+            MenuTree = HostedService.RequestMenuItems.Invoke();
+            StateHasChanged();
+        }
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (firstRender) loadCoreMenu();
+    }
+}
