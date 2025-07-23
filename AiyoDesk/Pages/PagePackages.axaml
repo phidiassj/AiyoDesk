@@ -17,6 +17,7 @@
 		<UserControl Name="CondaServicePanel" />
 		<UserControl Name="LlamaCppServicePanel" />
 		<UserControl Name="OpenWebUIServicePanel" />
+		<UserControl Name="ComfyUIServicePanel" />
 	</WrapPanel>
 
 </UserControl>

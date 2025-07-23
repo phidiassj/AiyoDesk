@@ -17,6 +17,7 @@ public partial class PagePackages : UserControl
     public PackagePanel condaServicePanel = new();
     public PackagePanel llamacppServicePanel = new();
     public PackagePanel openWebUIServicePanel = new();
+    public PackagePanel comfyUIServicePanel = new();
 
     public PagePackages()
     {
@@ -34,6 +35,8 @@ public partial class PagePackages : UserControl
         LlamaCppServicePanel.Content = llamacppServicePanel;
         openWebUIServicePanel.InitializePackage(ServiceCenter.openWebUIService);
         OpenWebUIServicePanel.Content = openWebUIServicePanel;
+        comfyUIServicePanel.InitializePackage(ServiceCenter.comfyUIService);
+        ComfyUIServicePanel.Content = comfyUIServicePanel;
     }
 
     public void manageButtonState()
@@ -44,6 +47,7 @@ public partial class PagePackages : UserControl
             condaServicePanel.resetActButtons();
             llamacppServicePanel.resetActButtons();
             openWebUIServicePanel.resetActButtons();
+            comfyUIServicePanel.resetActButtons();
         });
     }
 

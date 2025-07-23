@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Http;
 using System.Net.Sockets;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace AiyoDesk.LocalHost;
 
@@ -58,5 +61,21 @@ public class LocalIpAddressHelper
             }
         }
         return ipv6List;
+    }
+
+    public static async Task<bool> IsPortRunningAsync(int port, int timeoutMs = 3000)
+    {
+        using var cts = new CancellationTokenSource(timeoutMs);
+        using var client = new HttpClient { Timeout = TimeSpan.FromMilliseconds(timeoutMs) };
+        try
+        {
+            var url = $"http://127.0.0.1:{port}/";
+            using var resp = await client.GetAsync(url, cts.Token);
+            return resp.IsSuccessStatusCode;
+        }
+        catch
+        {
+            return false;
+        }
     }
 }

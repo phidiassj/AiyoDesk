@@ -61,6 +61,11 @@ public class CommandLineExecutor : IDisposable
         return Path.Combine(GetPackageRootPath(), "conda", "envs", "aiyodesk", "Scripts");
     }
 
+    public static string GetCondaEnvPath()
+    {
+        return Path.Combine(GetPackageRootPath(), "conda", "envs", "aiyodesk");
+    }
+
     public static void StartProcess(string commandString)
     {
         System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo

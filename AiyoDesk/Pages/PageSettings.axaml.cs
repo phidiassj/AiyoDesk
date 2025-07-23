@@ -106,6 +106,10 @@ public partial class PageSettings : UserControl
         {
             msg = ServiceCenter.openWebUIService.ServiceCli.MessageLogs;
         }
+        else if (sender.Equals(btnComfyUILogs) && !string.IsNullOrWhiteSpace(ServiceCenter.comfyUIService.ServiceCli.MessageLogs))
+        {
+            msg = ServiceCenter.comfyUIService.ServiceCli.MessageLogs;
+        }
 
         txtMessages.Text = msg;
         scrollMessages.ScrollToEnd();

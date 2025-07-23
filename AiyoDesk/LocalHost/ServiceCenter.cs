@@ -24,6 +24,7 @@ public class ServiceCenter
     public static CondaService condaService { get; set; } = default!;
     public static LlamaCppService llamaCppService { get; set; } = default!;
     public static OpenWebUIService openWebUIService { get; set; } = default!;
+    public static ComfyUIService comfyUIService { get; set; } = default!;
     public static ServiceCenter serviceCenter { get; set; } = default!;
 
     public static ModelManager modelManager { get; internal set; } = new();
@@ -51,6 +52,7 @@ public class ServiceCenter
         condaService = new();
         llamaCppService = new();
         openWebUIService = new();
+        comfyUIService = new();
         InitFinishProcess = afterProcess;
         InitFinishProcess?.Invoke();
     }

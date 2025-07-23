@@ -58,6 +58,7 @@
 					<Button Name="btnSysLogs" Content="系統紀錄" Click="LogsButton_Click" Margin="10,0,0,0" Classes="smallButton" />
 					<Button Name="btnLlamacppLogs" Content="llama.cpp" Click="LogsButton_Click" Margin="10,0,0,0" Classes="smallButton" />
 					<Button Name="btnOpenWebUILogs" Content="Open-WebUI" Click="LogsButton_Click" Margin="10,0,0,0" Classes="smallButton" />
+					<Button Name="btnComfyUILogs" Content="ComfyUI" Click="LogsButton_Click" Margin="10,0,0,0" Classes="smallButton" />
 				</StackPanel>
 			</Border>
 			<Border Padding="5" HorizontalAlignment="Stretch"
