@@ -177,9 +177,10 @@ public partial class MainWindow : Window
 
         if (ServiceCenter.hostedHttpService.PackageRunning || 
             ServiceCenter.llamaCppService.PackageRunning || 
-            ServiceCenter.openWebUIService.PackageRunning)
+            ServiceCenter.openWebUIService.PackageRunning || 
+            ServiceCenter.comfyUIService.PackageRunning)
         {
-            var result = await MessageDialogHandler.ShowConfirmAsync("仍有背景服務正在運行中，關閉本軟體將同時關閉這些服務。\n\n確定要立即關閉本軟體嗎?");
+            var result = await MessageDialogHandler.ShowConfirmAsync("仍有背景服務正在運行中，關閉本軟體將同時關閉這些服務。\n關閉服務可能需要一些時間，請不要強制結束本軟體以免資源無法完全釋放。\n\n確定要立即關閉本軟體嗎?");
             if (result == null || !result.Equals(true))
             {
                 e.Cancel = true;

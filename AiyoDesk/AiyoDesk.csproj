@@ -50,6 +50,9 @@
     <None Update="AIModels\RecommandModels.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Assets\ComfyUI-TimestepShiftModel.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Assets\favicon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

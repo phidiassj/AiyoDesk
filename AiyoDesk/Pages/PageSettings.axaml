@@ -63,8 +63,8 @@
 			</Border>
 			<Border Padding="5" HorizontalAlignment="Stretch"
 					BorderThickness="1" CornerRadius="5" BorderBrush="{DynamicResource MaterialDividerBrush}">
-				<ScrollViewer x:Name="scrollMessages" Height="490" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-					<SelectableTextBlock x:Name="txtMessages" Padding="10"
+				<ScrollViewer x:Name="scrollMessages" Height="490" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+					<SelectableTextBlock x:Name="txtMessages" Padding="10" TextWrapping="WrapWithOverflow"
 										 SelectionBrush="{DynamicResource MaterialPrimaryDarkBrush}"
 										 SelectionForegroundBrush="{DynamicResource MaterialPrimaryForegroundBrush}"
 										 Foreground="{DynamicResource MaterialPrimaryMidForegroundBrush}" 

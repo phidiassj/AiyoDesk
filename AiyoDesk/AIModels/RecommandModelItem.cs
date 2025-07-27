@@ -62,7 +62,7 @@ public class RecommandModelItem
         ProcessStartInfo psi2 = new ProcessStartInfo
         {
             FileName = "powershell",
-            Arguments = $"-ExecutionPolicy Bypass -File \"{scriptPath}\" -ModelUrl \"{VisionUrl}\" -OutputDir \"{targetPath}\"",
+            Arguments = $"-ExecutionPolicy Bypass -File \"{scriptPath}\" -ModelUrl \"{VisionUrl}\" -TargetPath \"{targetPath}\"",
             UseShellExecute = false,
             CreateNoWindow = false
         };
@@ -80,8 +80,6 @@ public class RecommandModelItem
         if (!Directory.Exists(targetPath)) return;
 
         Directory.Delete(targetPath, true);
-
-
     }
 
     private string getModelTypePathname()

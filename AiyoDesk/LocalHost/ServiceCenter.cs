@@ -97,7 +97,46 @@ public class ServiceCenter
                 }
             }
         }
-
+        
+        var cmSetting = await databaseManager.GetPackageSetting(comfyUIService.PackageName);
+        if (cmSetting != null && cmSetting.AutoActivate && !comfyUIService.PackageRunning)
+        {
+            string errMsg = string.Empty;
+            yield return $"正在嘗試啟動 {cmSetting.PackageName} ...";
+            try
+            {
+                await comfyUIService.PackageActivate();
+            }
+            catch (Exception ex)
+            {
+                errMsg = ex.Message;
+            }
+            if (errMsg != string.Empty)
+            {
+                yield return $"{comfyUIService.PackageName} 啟動失敗，錯誤:\n{errMsg}";
+            }
+            else
+            {
+                yield return $"正在等候 {comfyUIService.PackageName} 完成啟動...";
+                await Task.Delay(1000);
+                Stopwatch sw = Stopwatch.StartNew();
+                while (true)
+                {
+                    if (comfyUIService.PackageRunning || sw.Elapsed > TimeSpan.FromSeconds(300)) break;
+                    await Task.Delay(500);
+                }
+                sw.Stop();
+                if (comfyUIService.PackageRunning)
+                {
+                    yield return $"{comfyUIService.PackageName} 啟動成功";
+                }
+                else
+                {
+                    yield return $"{comfyUIService.PackageName} 因超過最大等候時間啟動失敗，請檢查系統訊息確認失敗原因";
+                }
+            }
+        }
+        
         var owuSetting = await databaseManager.GetPackageSetting(openWebUIService.PackageName);
         if (owuSetting != null && owuSetting.AutoActivate && !openWebUIService.PackageRunning)
         {
@@ -183,6 +222,7 @@ public class ServiceCenter
     public Dictionary<string, Dictionary<string, string>> GetServiceMenu()
     {
         Dictionary<string, Dictionary<string, string>> result = new();
+
         result.Add("交談介面", new Dictionary<string, string>());
         if (llamaCppService.PackageRunning)
         {
@@ -204,6 +244,19 @@ public class ServiceCenter
         {
             result["交談介面"].Add(openWebUIService.PackageName, string.Empty);
         }
+
+        result.Add("圖片生成", new Dictionary<string, string>());
+        if (comfyUIService.PackageRunning)
+        {
+            string serviceUrl = string.Empty;
+            if (ServiceIP != null) serviceUrl = $"http://{ServiceIP}:{comfyUIService.ServicePort}";
+            result["圖片生成"].Add(comfyUIService.PackageName, serviceUrl);
+        }
+        else
+        {
+            result["圖片生成"].Add(comfyUIService.PackageName, string.Empty);
+        }
+
         return result;
     }
 
@@ -238,6 +291,14 @@ public class ServiceCenter
             try
             {
                 await openWebUIService.PackageStop();
+            }
+            catch { }
+        }
+        if (comfyUIService.PackageRunning)
+        {
+            try
+            {
+                await comfyUIService.PackageStop();
             }
             catch { }
         }

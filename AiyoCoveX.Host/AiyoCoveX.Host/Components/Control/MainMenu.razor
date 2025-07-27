@@ -10,26 +10,11 @@
         foreach (string treeName in MenuTree.Keys)
         {
 
-            <FluentButton id="@(getMenuId(treeName))" Appearance="Appearance.Outline" @onclick="@(() => showCoreMenuItems(treeName))">
+            <FluentButton id="@(getMenuId(treeName))" Appearance="Appearance.Outline">
                 @treeName
             </FluentButton>
-            @* <FluentPopover Style="width: 200px;" AnchorId="@(getMenuId(treeName))" Open="@(menuOpen(treeName))" OpenChanged="@(() => closeMenu())" AutoFocus="false">
-                <Body>
-                    <FluentStack Orientation="Orientation.Vertical" VerticalGap="5">
-                        @foreach (string nodeName in MenuTree[treeName].Keys)
-                        {
-                            <FluentButton Appearance="Appearance.Outline" 
-                                          Disabled="@(string.IsNullOrWhiteSpace(MenuTree[treeName][nodeName]))"
-                                          OnClick="@(() => menuItemClick(MenuTree[treeName][nodeName]))">
-                                @nodeName
-                            </FluentButton>
-                            <FluentMenuItem Disabled="@(string.IsNullOrWhiteSpace(MenuTree[treeName][nodeName]))" OnClick="@(() => menuItemClick(MenuTree[treeName][nodeName]))">@nodeName</FluentMenuItem>
-                        }
-                    </FluentStack>
-                </Body>
-            </FluentPopover> *@
             <FluentMenu Anchor="@(getMenuId(treeName))" UseMenuService="true" Anchored="true" HorizontalPosition="HorizontalPosition.End"
-                        @bind-Open="isMenuOpen" VerticalThreshold="170">
+                        Trigger="MouseButton.Left" VerticalThreshold="170">
 
                 @foreach (string nodeName in MenuTree[treeName].Keys)
                 {
@@ -52,7 +37,6 @@
     string lastTreeName = "nothing";
     Dictionary<string, string> menuIdDic = new();
     int menuId = 0;
-    bool isMenuOpen = false;
 
     string getMenuId(string treeName)
     {
@@ -75,13 +59,6 @@
     void closeMenu()
     {
         actMenuName = string.Empty;
-        StateHasChanged();
-    }
-
-    void showCoreMenuItems(string treeName)
-    {
-        actMenuName = menuIdDic[treeName];
-        isMenuOpen = !isMenuOpen;
         StateHasChanged();
     }
 

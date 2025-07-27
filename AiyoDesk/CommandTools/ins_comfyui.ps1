@@ -25,6 +25,7 @@ switch ($vendor) {
         pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.0
     }
     'intel' {
+        Write-Host "安裝支援 Intel 的 PyTorch..."
         pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/xpu
     }
     default {
@@ -51,7 +52,7 @@ $extracted = Join-Path $OutputDir 'ComfyUI-master'
 # 3. 安裝 requirements.txt
 $reqFile = Join-Path $extracted 'requirements.txt'
 if (Test-Path $reqFile) {
-    Write-Host "`n開始執行 pip install -r requirements.txt ..." -ForegroundColor Cyan
+    Write-Host "`n開始執行 ComfyUI 必要組件安裝 ..." -ForegroundColor Cyan
     Push-Location $extracted
     pip install -r $reqFile
     Pop-Location
@@ -61,4 +62,22 @@ else {
     Write-Host "`n警告：找不到 requirements.txt，請檢查 ComfyUI 版本。" -ForegroundColor Yellow
 }
 
-Write-Host "ComfyUI 安裝成功"
+# 檢查 custom_nodes 資料夾
+$customNodesPath = Join-Path $extracted 'custom_nodes'
+if (-Not (Test-Path $customNodesPath)) {
+    Write-Host "`n錯誤：找不到 custom_nodes 資料夾，ComfyUI 安裝失敗。" -ForegroundColor Red
+    exit 1
+}
+
+# 下載並安裝 ComfyUI-TimestepShiftModel
+# $timestepZipUrl = "https://github.com/ChenDarYen/ComfyUI-TimestepShiftModel/archive/refs/heads/main.zip"
+$timestepZip = "$PSScriptRoot\..\Assets\ComfyUI-TimestepShiftModel.zip"
+
+# Write-Host "`n下載 TimestepShiftModel 原始碼..."
+# Invoke-WebRequest -Uri $timestepZipUrl -OutFile $timestepZip -UseBasicParsing -Verbose
+
+Write-Host "解壓縮 ComfyUI-TimestepShiftModel 到 custom_nodes 資料夾..."
+Expand-Archive -LiteralPath $timestepZip -DestinationPath $customNodesPath -Force
+
+Write-Host "`nTimestepShiftModel 安裝完成。" -ForegroundColor Green
+Write-Host "ComfyUI 安裝成功" -ForegroundColor Cyan
