@@ -203,14 +203,15 @@ public partial class PageMustInstall : UserControl
             }
             catch
             {
-                resultMsg += $"安裝 {ServiceCenter.condaService.PackageName} 發生錯誤\n";
+                resultMsg += $"安裝 {ServiceCenter.openWebUIService.PackageName} 發生錯誤\n";
             }
         }
 
         if (string.IsNullOrWhiteSpace(resultMsg))
         {
-            await MessageDialogHandler.ShowMessageAsync("要求的作業已經執行完成，\n建議您先關閉本軟體後重新執行。");
-            mainWindow.SwitchPage(mainWindow.pagePackages);
+            await MessageDialogHandler.ShowMessageAsync("要求的作業已經執行完成，\n本軟體將自動關閉讓設定生效，\n請稍候重新執行本軟體。");
+            mainWindow.GlobalClose();
+            //mainWindow.SwitchPage(mainWindow.pagePackages);
         }
         else
         {

@@ -52,6 +52,11 @@ public partial class MainWindow : Window
         //showPageName(pageMain);
     }
 
+    public void GlobalClose()
+    {
+        this.Close();
+    }
+
     void setTrayIcon()
     {
         if (ServiceCenter.databaseManager.GetSystemSetting().MinToSystemTray == false) return;

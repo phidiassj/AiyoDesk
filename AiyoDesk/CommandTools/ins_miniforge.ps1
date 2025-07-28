@@ -27,8 +27,8 @@ function Install-Conda {
 
 function Create-Conda-Env {
     $condaExe = Join-Path $CondaPath "Scripts\conda.exe"
-    Write-Host "建立 Python 3.11 環境..."
-    & $condaExe create -n aiyodesk python=3.11 -y
+    Write-Host "建立 Python 3.12 環境..."
+    & $condaExe create -n aiyodesk python=3.12 -y
 }
 
 # Main

@@ -79,5 +79,10 @@ $timestepZip = "$PSScriptRoot\..\Assets\ComfyUI-TimestepShiftModel.zip"
 Write-Host "解壓縮 ComfyUI-TimestepShiftModel 到 custom_nodes 資料夾..."
 Expand-Archive -LiteralPath $timestepZip -DestinationPath $customNodesPath -Force
 
+$unloadModelZip = "$PSScriptRoot\..\Assets\ComfyUI-Unload-Model.zip"
+
+Write-Host "解壓縮 ComfyUI-UnloadModel 到 custom_nodes 資料夾..."
+Expand-Archive -LiteralPath $unloadModelZip -DestinationPath $customNodesPath -Force
+
 Write-Host "`nTimestepShiftModel 安裝完成。" -ForegroundColor Green
 Write-Host "ComfyUI 安裝成功" -ForegroundColor Cyan

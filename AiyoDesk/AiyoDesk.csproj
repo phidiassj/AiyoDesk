@@ -11,6 +11,8 @@
     <PublishTrimmed>False</PublishTrimmed>
 	<ApplicationVersion>0.1.2.*</ApplicationVersion>
 	<ApplicationRevision>1</ApplicationRevision>
+	<PlatformTarget>x64</PlatformTarget>
+	<Company>aiyo.app</Company>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
@@ -51,6 +53,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Assets\ComfyUI-TimestepShiftModel.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\ComfyUI-Unload-Model.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Assets\favicon.ico">
