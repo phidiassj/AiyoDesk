@@ -19,7 +19,7 @@
   **AiyoDesk** 附帶一個自託管的 http 服務及響應式網頁介面，從單一網址入口即可切換存取各個軟體套件，即使不熟悉電腦操作的區網或家庭成員，也可以輕鬆共同使用 AI 服務。
   | llama.cpp | Open-WebUI | ComfyUI |
   | :-------: | :-------: | :-------: |
-  | <img src="assets/images/manual011.jpg" width="300" /> | <img src="assets/images/manual023.jpg" width="300" /> | <img src="assets/images/manual020.jpg" width="300" /> |
+  | <img src="assets/images/manual019.jpg" width="300" /> | <img src="assets/images/manual023.jpg" width="300" /> | <img src="assets/images/manual020.jpg" width="300" /> |
 
 - 自動參數設置及管理
 
